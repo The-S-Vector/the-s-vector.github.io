@@ -10,3 +10,26 @@ navbar_entries:
   
   - title: projects
     url: projects
+
+
+
+project_entries:
+  - title: LaTex 
+    desc: I will be experimenting with LaTex! This will not be a tutorial although, I will start off not knowing anything and show my learning proccess while improving. So, you might learn something I guess.
+    url: projects/LaTex
+
+  - title: Python 
+    desc: Posting random Python related stuff.
+    url: projects/Coding/Python
+
+  - title: Website Building 
+    desc: Here is were I detail how this website was made. 
+    url: projects/Website
+
+  - title: 3D Printing 
+    desc: Here is were I show my creations and prints for the world to see and use! 
+    url: projects/3Dprinting
+  
+  - title: Linux 
+    desc: Here is were I will be talking me suing Linux and my experience with it.
+    url: project/Linux
