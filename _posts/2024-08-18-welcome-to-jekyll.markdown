@@ -31,4 +31,4 @@ Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most ou
 
 
 <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
+        async src="https://gc.zgo.at/count.js"></script>
