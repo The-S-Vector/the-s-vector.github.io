@@ -30,6 +30,7 @@ github_username:  The-S-Vector
 remote_theme: abhinavs/moonwalk
 plugins:
   - jekyll-feed
+  - jekyll-password-protect
   # - jekyll-pagination
   # - jekyll-tagging
   # - jekyll-tagging-related_posts

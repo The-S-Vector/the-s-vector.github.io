@@ -7,7 +7,7 @@ source "https://rubygems.org"
 #     bundle exec jekyll serve
 
 #gem "jekyll-theme-chirpy", "~> 7.0", ">= 7.0.1"
-gem 'jekyll', '~> 4.3', '>= 4.3.3'
+#gem 'jekyll', '~> 4.3', '>= 4.3.3'
 #
 # This will help ensure the proper Jekyll version is running.
 # This is the default theme for new Jekyll sites. You may change this to anything you like.

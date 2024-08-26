@@ -11,7 +11,8 @@ navbar_entries:
   - title: projects
     url: projects
 
-
+  - title: analytics
+    url: analytics
 
 project_entries:
   - title: LaTex 
