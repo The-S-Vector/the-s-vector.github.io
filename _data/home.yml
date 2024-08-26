@@ -33,4 +33,9 @@ project_entries:
   
   - title: Linux 
     desc: Here is were I will be talking me suing Linux and my experience with it.
-    url: project/Linux
+    url: projects/Linux
+
+  - title: Phreaking 
+    desc: Here I would like to explore the world of communications systems.
+    url: projects/phreaking
+
