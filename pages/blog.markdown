@@ -1,7 +1,7 @@
 ---
-#layout: post
-title: blog
-permalink: /blog/
+layout: categories
+icon: fas fa-stream
+order: 1
 ---
 
 

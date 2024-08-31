@@ -1,7 +1,7 @@
 ---
-#layout: post
-title: LaTex
-permalink: /projects/LaTex/
+layout: categories
+icon: fas fa-stream
+order: 1
 ---
 
 
