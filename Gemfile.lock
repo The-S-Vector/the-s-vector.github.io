@@ -108,7 +108,8 @@ PLATFORMS
 
 DEPENDENCIES
   html-proofer
-  jekyll-theme-chirpy (~> 7.0, >= 7.0.1)
+  jekyll (~> 4.3, >= 4.3.3)
+  jekyll-theme-chirpy
 
 BUNDLED WITH
    2.5.18

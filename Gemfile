@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "jekyll-theme-chirpy", "~> 7.0", ">= 7.0.1"
+gem "jekyll-theme-chirpy"
 
 #group :test do
 #  gem "html-proofer", "~> 5.0"
@@ -32,7 +32,7 @@ gem "jekyll-theme-chirpy", "~> 7.0", ">= 7.0.1"
 #     bundle exec jekyll serve
 
 #gem "jekyll-theme-chirpy", "~> 7.0", ">= 7.0.1"
-#gem 'jekyll', '~> 4.3', '>= 4.3.3'
+gem 'jekyll', '~> 4.3', '>= 4.3.3'
 #
 # This will help ensure the proper Jekyll version is running.
 # This is the default theme for new Jekyll sites. You may change this to anything you like.

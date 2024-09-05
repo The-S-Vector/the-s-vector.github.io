@@ -14,7 +14,7 @@
 
 
 <!-- `site.alt_lang` can specify a language different from the UI -->
-<html lang="en" >
+<html lang="en" data-mode="dark">
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
@@ -32,21 +32,20 @@
 <meta name="generator" content="Jekyll v4.3.3" />
 <meta property="og:title" content="404: Page not found" />
 <meta property="og:locale" content="en" />
-<meta name="description" content="A minimal, responsive and feature-rich Jekyll theme for technical writing." />
-<meta property="og:description" content="A minimal, responsive and feature-rich Jekyll theme for technical writing." />
+<meta name="description" content="A place where I show you my things" />
+<meta property="og:description" content="A place where I show you my things" />
 <link rel="canonical" href="http://localhost:4000/404.html" />
 <meta property="og:url" content="http://localhost:4000/404.html" />
-<meta property="og:site_name" content="Chirpy" />
+<meta property="og:site_name" content="The-S-Vector" />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="404: Page not found" />
-<meta name="twitter:site" content="@twitter_username" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"WebPage","description":"A minimal, responsive and feature-rich Jekyll theme for technical writing.","headline":"404: Page not found","url":"http://localhost:4000/404.html"}</script>
+{"@context":"https://schema.org","@type":"WebPage","description":"A place where I show you my things","headline":"404: Page not found","url":"http://localhost:4000/404.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 
-  <title>404: Page not found | Chirpy
+  <title>404: Page not found | The-S-Vector
   </title>
 
   <!--
@@ -63,8 +62,8 @@
   <link rel="manifest" href="/assets/img/favicons/site.webmanifest">
 
 <link rel="shortcut icon" href="/assets/img/favicons/favicon.ico">
-<meta name="apple-mobile-web-app-title" content="Chirpy">
-<meta name="application-name" content="Chirpy">
+<meta name="apple-mobile-web-app-title" content="The-S-Vector">
+<meta name="application-name" content="The-S-Vector">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml">
 <meta name="theme-color" content="#ffffff">
@@ -123,113 +122,6 @@
   <!-- JavaScript -->
 
   
-    <!-- Switch the mode between dark and light. -->
-
-<script type="text/javascript">
-  class ModeToggle {
-    static get MODE_KEY() {
-      return 'mode';
-    }
-    static get MODE_ATTR() {
-      return 'data-mode';
-    }
-    static get DARK_MODE() {
-      return 'dark';
-    }
-    static get LIGHT_MODE() {
-      return 'light';
-    }
-    static get ID() {
-      return 'mode-toggle';
-    }
-
-    constructor() {
-      let self = this;this.sysDarkPrefers.addEventListener('change', () => {
-        if (self.hasMode) {
-          self.clearMode();
-        }
-        self.notify();
-      });
-
-      if (!this.hasMode) {
-        return;
-      }
-
-      if (this.isDarkMode) {
-        this.setDark();
-      } else {
-        this.setLight();
-      }
-    }
-
-    get sysDarkPrefers() {
-      return window.matchMedia('(prefers-color-scheme: dark)');
-    }
-
-    get isPreferDark() {
-      return this.sysDarkPrefers.matches;
-    }
-
-    get isDarkMode() {
-      return this.mode === ModeToggle.DARK_MODE;
-    }
-
-    get hasMode() {
-      return this.mode != null;
-    }
-
-    get mode() {
-      return sessionStorage.getItem(ModeToggle.MODE_KEY);
-    }get modeStatus() {
-      if (this.hasMode) {
-        return this.mode;
-      } else {
-        return this.isPreferDark ? ModeToggle.DARK_MODE : ModeToggle.LIGHT_MODE;
-      }
-    }
-
-    setDark() {
-      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.DARK_MODE);
-      sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE);
-    }
-
-    setLight() {
-      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.LIGHT_MODE);
-      sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE);
-    }
-
-    clearMode() {
-      document.documentElement.removeAttribute(ModeToggle.MODE_ATTR);
-      sessionStorage.removeItem(ModeToggle.MODE_KEY);
-    }notify() {
-      window.postMessage(
-        {
-          direction: ModeToggle.ID,
-          message: this.modeStatus
-        },
-        '*'
-      );
-    }
-
-    flipMode() {
-      if (this.hasMode) {
-        this.clearMode();
-      } else {
-        if (this.isPreferDark) {
-          this.setLight();
-        } else {
-          this.setDark();
-        }
-      }
-
-      this.notify();
-    }
-  }
-
-  const modeToggle = new ModeToggle();
-</script>
-
-  
 
   <!-- A placeholder to allow defining custom metadata -->
 
@@ -241,12 +133,12 @@
 
 <aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
   <header class="profile-wrapper">
-    <a href="/" id="avatar" class="rounded-circle"><img src="https://chirpy-img.netlify.app/commons/avatar.jpg" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a>
+    <a href="/" id="avatar" class="rounded-circle"><img src="/assets/img/favicons/discored profil pic dead cell.png" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a>
 
     <h1 class="site-title">
-      <a href="/">Chirpy</a>
+      <a href="/">The-S-Vector</a>
     </h1>
-    <p class="site-subtitle fst-italic mb-0">A text-focused Jekyll theme</p>
+    <p class="site-subtitle fst-italic mb-0">My personal website# it will display as the subtitle</p>
   </header>
   <!-- .profile-wrapper -->
 
@@ -265,12 +157,6 @@
   </nav>
 
   <div class="sidebar-bottom d-flex flex-wrap  align-items-center w-100">
-    
-      <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle">
-        <i class="fas fa-adjust"></i>
-      </button>
-
-      
     
 
     
@@ -422,7 +308,7 @@
 
 
 
-<p class="lead"></p>
+<p class="lead">Sorry, we've misplaced that URL or it's pointing to something that doesn't exist.</p>
 
     </div>
   
@@ -494,7 +380,7 @@
     <time>2024</time>
 
     
-      <a href="https://github.com/username">your_full_name</a>.
+      <a href="https://github.com/The-S-Vector">The-S-Vector</a>.
     
 
     
