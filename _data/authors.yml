@@ -6,11 +6,6 @@
 #   url: {homepage_of_author}
 # -------------------------------------
 
-cotes:
-<<<<<<< HEAD
-  name: Sebastian
-=======
+The-S-Vector:
   name: The-S-Vector
->>>>>>> parent of 9f623d0 (chirp from scratch)
   url: https://github.com/The-S-Vector/
-
