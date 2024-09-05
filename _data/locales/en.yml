@@ -15,6 +15,7 @@ tabs:
   tags: Tags
   archives: Archives
   about: About
+  analytics: Analytics
 
 # the text displayed in the search bar & search results
 search:
@@ -30,7 +31,7 @@ panel:
 copyright:
   # Shown at the bottom of the post
   license:
-    template: This post is licensed under :LICENSE_NAME by the author.
+    template: This post is licensed under the :Creative Common by The-S-Vector.
     name: CC BY 4.0
     link: https://creativecommons.org/licenses/by/4.0/
 
