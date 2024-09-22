@@ -1,4 +1,4 @@
-I"6<!-- The trending tags list -->
+I"m<!-- The trending tags list -->
 
 
 
@@ -14,6 +14,25 @@
 
 
 
+  
+    
+    
+    
+    
+      
+        
+        
 
+
+
+  <section>
+    <h2 class="panel-heading">Trending Tags</h2>
+    <div class="d-flex flex-wrap mt-3 mb-1 me-3">
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/typography/">typography</a>
+      
+    </div>
+  </section>
 
 :ET
