@@ -1,7 +1,7 @@
 ---
 layout: page
 icon: fa-solid fa-chart-bar
-order: 1
+order: 3
 ---
 
 <iframe src="https://the-s-vector.goatcounter.com?access-token=TOKEN"></iframe>
