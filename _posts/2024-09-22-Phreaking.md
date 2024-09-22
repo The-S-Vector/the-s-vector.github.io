@@ -1,7 +1,7 @@
 ---
 title: Phreaking
 description: Radio Phreaking sounds so cool. 
-author: the-s-vector
+author: The-S-Vector
 date: 2024/09/22
 categories: [Projects, Phreaking]
 tags: [Phreaking, radio, hacking, computing]

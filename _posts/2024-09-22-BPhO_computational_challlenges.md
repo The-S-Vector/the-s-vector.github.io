@@ -1,7 +1,7 @@
 ---
 title: BPhO Computational Physics 
 description: Here are my attempts at the BPhO Computational Physics challenges
-author: the-s-vector
+author: The-S-Vector
 date: 2024/09/22
 categories: [Projects, BPho]
 tags: [BPhO, physics, math, computing]
