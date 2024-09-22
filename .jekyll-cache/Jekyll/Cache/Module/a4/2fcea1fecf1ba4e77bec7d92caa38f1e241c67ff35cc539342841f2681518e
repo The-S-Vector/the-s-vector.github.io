@@ -1,4 +1,4 @@
-I"U<!-- Get 5 last posted/updated posts -->
+I"<!-- Get 5 last posted/updated posts -->
 
 
 
@@ -22,6 +22,13 @@
         
         <li class="text-truncate lh-lg">
           <a href="/the-s-vector.eu/posts/3D-printing/">3D printing</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/the-s-vector.eu/posts/BPhO_computational_challlenges/">BPhO Computational Physics</a>
         </li>
       
         
