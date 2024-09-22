@@ -21,7 +21,7 @@ tagline: My personal website
 # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
-  A place where I show you my things
+  A place where I write about things
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -36,7 +36,7 @@ github:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: The-S-Vector
+  name: Sebastian
   # email: exanmple@domain.com # change to your email address
   links:
     # The first element serves as the copyright owner's link
