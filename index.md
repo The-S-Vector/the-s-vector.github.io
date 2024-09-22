@@ -2,6 +2,3 @@
 layout: home
 # Index page
 ---
-
-
-<p> hello </p>
