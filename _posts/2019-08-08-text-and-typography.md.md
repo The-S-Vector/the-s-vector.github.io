@@ -195,3 +195,5 @@ The image below will toggle dark/light mode based on theme preference, notice it
 
 [^footnote]: The footnote source
 [^fn-nth-2]: The 2nd footnote source
+
+<script data-goatcounter="https://the-s-vector.goatcounter.com/count" async src="https://gc.zgo.at/count.js"> </script>
