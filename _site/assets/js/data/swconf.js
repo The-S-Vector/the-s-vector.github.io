@@ -1,10 +1,16 @@
 const swconf = {
   
-    cacheName: 'chirpy-1726139978',resources: [
+    cacheName: 'chirpy-1727038915',resources: [
       '/the-s-vector.eu/assets/css/jekyll-theme-chirpy.css',
       '/the-s-vector.eu/',
       
+        '/the-s-vector.eu/IB-Course-Stuff/',
+      
+        '/the-s-vector.eu/analytics/',
+      
         '/the-s-vector.eu/categories/',
+      
+        '/the-s-vector.eu/projects/',
       
         '/the-s-vector.eu/tags/',
       

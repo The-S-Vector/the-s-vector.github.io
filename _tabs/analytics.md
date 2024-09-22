@@ -1,6 +1,6 @@
 ---
 layout: page
-icon: fas fa-analytics
+icon: fa-solid fa-chart-bar
 order: 1
 ---
 

@@ -3,17 +3,17 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>http://localhost:4000/the-s-vector.eu/</id>
   <title>The-S-Vector</title>
-  <subtitle>A place where I show you my things</subtitle>
-  <updated>2024-09-12T13:19:35+02:00</updated>
+  <subtitle>A place where I write about things</subtitle>
+  <updated>2024-09-22T23:01:55+02:00</updated>
   <author>
-    <name>The-S-Vector</name>
+    <name>Sebastian</name>
     <uri>http://localhost:4000/the-s-vector.eu/</uri>
   </author>
   <link rel="self" type="application/atom+xml" href="http://localhost:4000/the-s-vector.eu/feed.xml"/>
   <link rel="alternate" type="text/html" hreflang="en"
     href="http://localhost:4000/the-s-vector.eu/"/>
   <generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator>
-  <rights> © 2024 The-S-Vector </rights>
+  <rights> © 2024 Sebastian </rights>
   <icon>the-s-vector.eu/assets/img/favicons/favicon.ico</icon>
   <logo>the-s-vector.eu/assets/img/favicons/favicon-96x96.png</logo>
 
