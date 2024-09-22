@@ -4,7 +4,7 @@
   <id>http://localhost:4000/the-s-vector.eu/</id>
   <title>The-S-Vector</title>
   <subtitle>A place where I write about things</subtitle>
-  <updated>2024-09-22T23:19:36+02:00</updated>
+  <updated>2024-09-22T23:30:08+02:00</updated>
   <author>
     <name>Sebastian</name>
     <uri>http://localhost:4000/the-s-vector.eu/</uri>
@@ -20,14 +20,66 @@
 
   
   <entry>
-    <title>BPhO Computational Physics</title>
-    <link href="http://localhost:4000/the-s-vector.eu/posts/BPhO_computational_challlenges/" rel="alternate" type="text/html" title="BPhO Computational Physics" />
+    <title>Rust</title>
+    <link href="http://localhost:4000/the-s-vector.eu/posts/Rust/" rel="alternate" type="text/html" title="Rust" />
     <published>2024-09-22T00:00:00+02:00</published>
   
     <updated>2024-09-22T00:00:00+02:00</updated>
   
-    <id>http://localhost:4000/the-s-vector.eu/posts/BPhO_computational_challlenges/</id>
-    <content src="http://localhost:4000/the-s-vector.eu/posts/BPhO_computational_challlenges/" />
+    <id>http://localhost:4000/the-s-vector.eu/posts/Rust/</id>
+    <content src="http://localhost:4000/the-s-vector.eu/posts/Rust/" />
+    <author>
+      <name>the-s-vector</name>
+    </author>
+
+  
+    
+    <category term="Coding" />
+    
+    <category term="Rust" />
+    
+  
+
+  <summary>Here I try and write what I have learned of Rust so I understand and learn better.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Python</title>
+    <link href="http://localhost:4000/the-s-vector.eu/posts/Python/" rel="alternate" type="text/html" title="Python" />
+    <published>2024-09-22T00:00:00+02:00</published>
+  
+    <updated>2024-09-22T00:00:00+02:00</updated>
+  
+    <id>http://localhost:4000/the-s-vector.eu/posts/Python/</id>
+    <content src="http://localhost:4000/the-s-vector.eu/posts/Python/" />
+    <author>
+      <name>the-s-vector</name>
+    </author>
+
+  
+    
+    <category term="Coding" />
+    
+    <category term="Python" />
+    
+  
+
+  <summary>Here I try and write what I have learned of python so I understand and learn better.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Phreaking</title>
+    <link href="http://localhost:4000/the-s-vector.eu/posts/Phreaking/" rel="alternate" type="text/html" title="Phreaking" />
+    <published>2024-09-22T00:00:00+02:00</published>
+  
+    <updated>2024-09-22T00:00:00+02:00</updated>
+  
+    <id>http://localhost:4000/the-s-vector.eu/posts/Phreaking/</id>
+    <content src="http://localhost:4000/the-s-vector.eu/posts/Phreaking/" />
     <author>
       <name>the-s-vector</name>
     </author>
@@ -36,63 +88,63 @@
     
     <category term="Projects" />
     
-    <category term="BPho" />
+    <category term="Phreaking" />
     
   
 
-  <summary>Here are my attempts at the BPhO Computational Physics challenges</summary>
+  <summary>Radio Phreaking sounds so cool.</summary>
 
   </entry>
 
   
   <entry>
-    <title>3D printing</title>
-    <link href="http://localhost:4000/the-s-vector.eu/posts/3D-printing/" rel="alternate" type="text/html" title="3D printing" />
+    <title>Linux</title>
+    <link href="http://localhost:4000/the-s-vector.eu/posts/Linux/" rel="alternate" type="text/html" title="Linux" />
     <published>2024-09-22T00:00:00+02:00</published>
   
     <updated>2024-09-22T00:00:00+02:00</updated>
   
-    <id>http://localhost:4000/the-s-vector.eu/posts/3D-printing/</id>
-    <content src="http://localhost:4000/the-s-vector.eu/posts/3D-printing/" />
-    <author>
-      <name>The-S-Vector</name>
-    </author>
-
-  
-    
-    <category term="Projects" />
-    
-    <category term="3D_Printing" />
-    
-  
-
-  <summary>A place where I can showcase my prints</summary>
-
-  </entry>
-
-  
-  <entry>
-    <title>Text and Typography</title>
-    <link href="http://localhost:4000/the-s-vector.eu/posts/text-and-typography.md/" rel="alternate" type="text/html" title="Text and Typography" />
-    <published>2019-08-08T05:33:00+02:00</published>
-  
-    <updated>2019-08-08T05:33:00+02:00</updated>
-  
-    <id>http://localhost:4000/the-s-vector.eu/posts/text-and-typography.md/</id>
-    <content src="http://localhost:4000/the-s-vector.eu/posts/text-and-typography.md/" />
+    <id>http://localhost:4000/the-s-vector.eu/posts/Linux/</id>
+    <content src="http://localhost:4000/the-s-vector.eu/posts/Linux/" />
     <author>
       <name>the-s-vector</name>
     </author>
 
   
     
-    <category term="Blogging" />
+    <category term="Projects" />
     
-    <category term="Demo" />
+    <category term="Linux" />
     
   
 
-  <summary>Examples of text, typography, math equations, diagrams, flowcharts, pictures, videos, and more.</summary>
+  <summary>Linux is an Operating system, here is were I document my use of it.</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>LATEX</title>
+    <link href="http://localhost:4000/the-s-vector.eu/posts/LaTex/" rel="alternate" type="text/html" title="LATEX" />
+    <published>2024-09-22T00:00:00+02:00</published>
+  
+    <updated>2024-09-22T00:00:00+02:00</updated>
+  
+    <id>http://localhost:4000/the-s-vector.eu/posts/LaTex/</id>
+    <content src="http://localhost:4000/the-s-vector.eu/posts/LaTex/" />
+    <author>
+      <name>the-s-vector</name>
+    </author>
+
+  
+    
+    <category term="Projects" />
+    
+    <category term="LaTex" />
+    
+  
+
+  <summary>LaTex is a typesetting language used for academics especialy for math, physics and computing</summary>
 
   </entry>
 

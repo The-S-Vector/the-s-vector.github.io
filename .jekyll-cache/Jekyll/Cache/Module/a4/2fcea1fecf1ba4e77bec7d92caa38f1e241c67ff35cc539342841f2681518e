@@ -1,4 +1,4 @@
-I"<!-- Get 5 last posted/updated posts -->
+I"+<!-- Get 5 last posted/updated posts -->
 
 
 
@@ -35,7 +35,21 @@
         
         
         <li class="text-truncate lh-lg">
-          <a href="/the-s-vector.eu/posts/text-and-typography.md/">Text and Typography</a>
+          <a href="/the-s-vector.eu/posts/LaTex/">LATEX</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/the-s-vector.eu/posts/Linux/">Linux</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/the-s-vector.eu/posts/Phreaking/">Phreaking</a>
         </li>
       
     </ul>

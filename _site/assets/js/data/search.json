@@ -1,6 +1,91 @@
 [
   
   {
+    "title": "Rust",
+    "url": "/the-s-vector.eu/posts/Rust/",
+    "categories": "Coding, Rust",
+    "tags": "Rust, Coding, computing",
+    "date": "2024-09-22 00:00:00 +0200",
+    
+
+
+
+
+
+    
+    "snippet": "",
+    "content": ""
+  },
+  
+  {
+    "title": "Python",
+    "url": "/the-s-vector.eu/posts/Python/",
+    "categories": "Coding, Python",
+    "tags": "Python, Coding, computing",
+    "date": "2024-09-22 00:00:00 +0200",
+    
+
+
+
+
+
+    
+    "snippet": "",
+    "content": ""
+  },
+  
+  {
+    "title": "Phreaking",
+    "url": "/the-s-vector.eu/posts/Phreaking/",
+    "categories": "Projects, Phreaking",
+    "tags": "Phreaking, radio, hacking, computing",
+    "date": "2024-09-22 00:00:00 +0200",
+    
+
+
+
+
+
+    
+    "snippet": "",
+    "content": ""
+  },
+  
+  {
+    "title": "Linux",
+    "url": "/the-s-vector.eu/posts/Linux/",
+    "categories": "Projects, Linux",
+    "tags": "Linux, computing",
+    "date": "2024-09-22 00:00:00 +0200",
+    
+
+
+
+
+
+    
+    "snippet": "",
+    "content": ""
+  },
+  
+  {
+    "title": "LATEX",
+    "url": "/the-s-vector.eu/posts/LaTex/",
+    "categories": "Projects, LaTex",
+    "tags": "LaTex, physics, math, computing",
+    "date": "2024-09-22 00:00:00 +0200",
+    
+
+
+
+
+
+    
+    "snippet": "",
+    "content": ""
+  },
+  
+  {
     "title": "BPhO Computational Physics",
     "url": "/the-s-vector.eu/posts/BPhO_computational_challlenges/",
     "categories": "Projects, BPho",
