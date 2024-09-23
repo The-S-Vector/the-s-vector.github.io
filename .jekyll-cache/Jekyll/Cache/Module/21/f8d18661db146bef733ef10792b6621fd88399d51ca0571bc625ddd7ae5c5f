@@ -1,4 +1,9 @@
-I"#<!-- The trending tags list -->
+I"7<!-- The Search results -->
+
+<div id="search-result-wrapper" class="d-flex justify-content-center d-none">
+  <div class="col-11 content">
+    <div id="search-hints">
+      <!-- The trending tags list -->
 
 
 
@@ -43,103 +48,10 @@
     
     
     
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
       
         
         
 
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
-        
-        
-
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
   
     
     
@@ -167,9 +79,12 @@
     
     
       
-        
-        
-
+    
+  
+    
+    
+    
+    
   
     
     
@@ -182,23 +97,10 @@
     
     
     
-      
-        
-        
-
   
     
     
     
-    
-      
-    
-  
-    
-    
-    
-    
-      
     
   
     
@@ -231,6 +133,109 @@
     
     
     
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
       
     
   
@@ -264,8 +269,6 @@
     
     
     
-      
-    
   
     
     
@@ -310,8 +313,6 @@
     
     
     
-    
-      
     
   
     
@@ -375,6 +376,9 @@
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/computing/">computing</a>
       
         
+        <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/3d-printing/">3d_printing</a>
+      
+        
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/coding/">Coding</a>
       
         
@@ -382,9 +386,6 @@
       
         
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/physics/">physics</a>
-      
-        
-        <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/3d-printing/">3d_printing</a>
       
         
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/bpho/">BPhO</a>
@@ -404,4 +405,9 @@
     </div>
   </section>
 
+
+    </div>
+    <div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div>
+  </div>
+</div>
 :ET

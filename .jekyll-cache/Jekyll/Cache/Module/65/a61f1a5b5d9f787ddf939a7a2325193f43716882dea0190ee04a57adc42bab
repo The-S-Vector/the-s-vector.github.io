@@ -1,4 +1,4 @@
-I"#<!-- The trending tags list -->
+I"<!-- The trending tags list -->
 
 
 
@@ -43,103 +43,10 @@
     
     
     
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
       
         
         
 
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
-        
-        
-
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-      
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
-  
-    
-    
-    
-    
   
     
     
@@ -167,9 +74,12 @@
     
     
       
-        
-        
-
+    
+  
+    
+    
+    
+    
   
     
     
@@ -182,23 +92,10 @@
     
     
     
-      
-        
-        
-
   
     
     
     
-    
-      
-    
-  
-    
-    
-    
-    
-      
     
   
     
@@ -231,6 +128,109 @@
     
     
     
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
       
     
   
@@ -264,8 +264,6 @@
     
     
     
-      
-    
   
     
     
@@ -310,8 +308,6 @@
     
     
     
-    
-      
     
   
     
@@ -375,6 +371,9 @@
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/computing/">computing</a>
       
         
+        <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/3d-printing/">3d_printing</a>
+      
+        
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/coding/">Coding</a>
       
         
@@ -382,9 +381,6 @@
       
         
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/physics/">physics</a>
-      
-        
-        <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/3d-printing/">3d_printing</a>
       
         
         <a class="post-tag btn btn-outline-primary" href="/the-s-vector.eu/tags/bpho/">BPhO</a>
