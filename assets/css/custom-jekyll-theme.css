@@ -7,7 +7,7 @@ h2,
 h1 {
     color: var(--heading-color);
     font-weight: 400;
-    font-family: Lato, "Microsoft Yahei", sans-serif
+    font-family: Arial, Helvetica, sans-serif
 }
 
 main h5,
@@ -2697,7 +2697,7 @@ search i {
 }
 
 #notification .toast-body {
-    font-family: Lato, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     line-height: 1.25rem
 }
 
@@ -3054,7 +3054,7 @@ search i {
 
 .pagination {
     color: var(--text-color);
-    font-family: Lato, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     justify-content: space-evenly
 }
 
@@ -3521,7 +3521,7 @@ header h1+.post-meta {
 
 #archives .date.day {
     font-size: 85%;
-    font-family: Lato, sans-serif
+    font-family: Arial, Helvetica, sans-serif
 }
 
 #archives a {
