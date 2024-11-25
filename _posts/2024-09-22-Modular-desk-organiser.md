@@ -3,7 +3,7 @@ title: Modular Desk Organiser
 date: 2024/09/22 
 categories: [Projects, 3D_Printing]
 tags: [3d_printing]
-#pin: True 
+pin: True 
 author: The-S-Vector
 analytics: True
 description: My modular Desk Organiser I designed for my GCSE Design and Technology project
