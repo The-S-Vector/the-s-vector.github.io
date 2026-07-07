@@ -1,0 +1,951 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Light Up Every School — Giga Booth Game</title>
+<meta name="description" content="A 60-second interactive booth game for Giga, the UNICEF-ITU initiative connecting every school to the internet.">
+<style>
+  :root{
+    --ink:#0b1220;
+    --ink-2:#121b2e;
+    --ink-3:#182640;
+    --paper-text:#edeff5;
+    --muted:#8fa0c0;
+    --accent:#4c8dff;
+    --accent-deep:#2e5be0;
+    --green:#33e1a0;
+    --amber:#ffb84d;
+    --red:#ff5c6c;
+
+    --font-display:'Segoe UI Variable Display','Segoe UI Semibold','SF Pro Rounded',system-ui,sans-serif;
+    --font-body:'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif;
+    --font-mono:'Cascadia Code','SFMono-Regular',Consolas,'Roboto Mono',monospace;
+
+    --fs-eyebrow:0.72rem;
+    --fs-body:clamp(0.95rem,1.4vw,1.05rem);
+    --fs-h1:clamp(1.9rem,4.4vw,3.2rem);
+    --fs-stat:clamp(2.6rem,6vw,4.4rem);
+    --fs-mono-lg:clamp(1.5rem,3.2vw,2.2rem);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper-text);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  :focus-visible{outline:2px solid var(--green); outline-offset:3px;}
+  button{font-family:inherit;}
+
+  .stage{
+    position:fixed; inset:0;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(76,141,255,0.16), transparent 55%),
+      radial-gradient(ellipse at 100% 110%, rgba(51,225,160,0.10), transparent 50%),
+      var(--ink);
+  }
+
+  .scene{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column;
+    padding:clamp(18px,3vw,44px);
+    opacity:0; pointer-events:none;
+    transition:opacity .5s ease;
+    overflow-y:auto;
+  }
+  .scene.active{opacity:1; pointer-events:auto;}
+
+  .eyebrow{
+    font:700 var(--fs-eyebrow)/1 var(--font-body);
+    letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent);
+  }
+
+  /* ---------- shared shapes (terrain / tech visual language) ---------- */
+  .shape{display:inline-block; flex:none;}
+  .shape-square{width:16px; height:16px; border-radius:3px; background:currentColor;}
+  .shape-triangle{width:0; height:0; border-left:9px solid transparent; border-right:9px solid transparent; border-bottom:16px solid currentColor;}
+  .shape-circle{width:16px; height:16px; border-radius:50%; border:2.5px solid currentColor; background:transparent;}
+
+  /* ---------- MENU ---------- */
+  #scene-menu{align-items:center; justify-content:center; text-align:center; gap:22px;}
+  .menu-head{max-width:640px; display:flex; flex-direction:column; gap:10px; align-items:center;}
+  .menu-head h1{margin:0; font:800 var(--fs-h1)/1.05 var(--font-display); text-wrap:balance;}
+  .menu-head p{margin:0; color:var(--muted); font-size:var(--fs-body); max-width:50ch;}
+  .menu-grid{
+    display:grid; grid-template-columns:repeat(3,minmax(180px,240px)); gap:16px;
+    width:100%; max-width:820px; justify-content:center;
+  }
+  .variant-card{
+    display:flex; flex-direction:column; align-items:flex-start; gap:10px; text-align:left;
+    background:var(--ink-2); border:1.5px solid rgba(140,165,220,0.16); border-radius:16px;
+    padding:20px; cursor:pointer; color:inherit;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .variant-card:hover{border-color:var(--accent); transform:translateY(-3px); background:var(--ink-3);}
+  .variant-icon{
+    width:38px; height:38px; border-radius:10px; background:rgba(76,141,255,0.14);
+    display:flex; align-items:center; justify-content:center; color:var(--accent);
+  }
+  .variant-card h3{margin:0; font:800 1.05rem/1.2 var(--font-display);}
+  .variant-card p{margin:0; font-size:.85rem; color:var(--muted); line-height:1.45;}
+  .variant-meta{font:700 .68rem/1 var(--font-mono); letter-spacing:.06em; color:var(--muted); text-transform:uppercase;}
+
+  /* ---------- INTRO ---------- */
+  #scene-intro{align-items:center; justify-content:center; text-align:center;}
+  .intro-card{max-width:640px; display:flex; flex-direction:column; gap:16px; align-items:center;}
+  .mode-badge{
+    font:700 .72rem/1 var(--font-mono); letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink); background:var(--green); padding:6px 12px; border-radius:999px;
+  }
+  .intro-card h1{margin:0; font:800 var(--fs-h1)/1.04 var(--font-display); text-wrap:balance;}
+  .intro-card p{margin:0; color:var(--muted); font-size:var(--fs-body); line-height:1.55; max-width:52ch;}
+  .intro-map-preview{display:flex; gap:7px; margin:2px 0 4px;}
+  .preview-dot{width:10px; height:10px; border-radius:50%;}
+  .start-btn{
+    margin-top:6px;
+    font:800 1.05rem/1 var(--font-display);
+    color:white; background:var(--accent-deep);
+    border:none; border-radius:999px;
+    padding:16px 34px; cursor:pointer;
+    box-shadow:0 8px 24px rgba(46,91,224,0.4);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .start-btn:hover{transform:translateY(-2px); box-shadow:0 12px 30px rgba(46,91,224,0.5);}
+  .start-btn:active{transform:translateY(0);}
+  .back-link{
+    background:none; border:none; color:var(--muted); font-size:.8rem; cursor:pointer;
+    text-decoration:underline; padding:4px;
+  }
+
+  /* ---------- PLAY ---------- */
+  #scene-play{gap:12px;}
+  .hud{display:flex; align-items:center; gap:clamp(12px,3vw,32px); flex-wrap:wrap;}
+  .hud-block{display:flex; flex-direction:column; gap:2px;}
+  .hud-label{font:700 .66rem/1 var(--font-body); letter-spacing:.1em; text-transform:uppercase; color:var(--muted);}
+  .hud-value{font:700 var(--fs-mono-lg)/1 var(--font-mono); font-variant-numeric:tabular-nums;}
+  .hud-value.timer{color:var(--paper-text);}
+  .hud-value.connected{color:var(--green);}
+  .hud-value.tokens{color:var(--amber);}
+  .timer-track{flex:1 1 200px; min-width:140px; height:8px; border-radius:999px; background:var(--ink-3); overflow:hidden;}
+  .timer-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--green)); width:100%; transition:width .1s linear;}
+
+  .map-wrap{position:relative; flex:1; min-height:440px; border-radius:20px; background:var(--ink-2); border:1px solid rgba(140,165,220,0.12); overflow:hidden;}
+  #mapCanvas{display:block; width:100%; height:100%; cursor:pointer; touch-action:manipulation;}
+
+  .play-hint{font-size:.85rem; color:var(--muted); text-align:center;}
+  .play-hint b{color:var(--paper-text); font-weight:700;}
+
+  .toast{
+    position:absolute; left:50%; top:20px; transform:translateX(-50%);
+    font:800 clamp(0.95rem,2vw,1.3rem)/1 var(--font-display);
+    color:var(--paper-text); background:rgba(11,18,32,0.9);
+    border:1px solid rgba(140,165,220,0.25);
+    padding:10px 22px; border-radius:12px;
+    opacity:0; pointer-events:none; transition:opacity .3s ease; text-align:center;
+    z-index:5;
+  }
+  .toast.show{opacity:1;}
+
+  .tech-picker{
+    position:absolute; left:0; top:0;
+    display:flex; flex-direction:column; gap:6px;
+    background:rgba(11,18,32,0.95); border:1px solid rgba(140,165,220,0.3);
+    border-radius:14px; padding:8px; width:210px;
+    opacity:0; pointer-events:none; transform:translateY(4px);
+    transition:opacity .15s ease, transform .15s ease;
+    z-index:6;
+  }
+  .tech-picker.show{opacity:1; pointer-events:auto; transform:translateY(0);}
+  .tech-timeout-bar{height:3px; border-radius:999px; background:var(--accent); width:100%; transform-origin:left;}
+  .tech-picker.show .tech-timeout-bar{animation:shrink 2.5s linear forwards;}
+  @keyframes shrink{from{transform:scaleX(1);} to{transform:scaleX(0);}}
+  .tech-btn{
+    display:flex; align-items:center; gap:10px;
+    background:var(--ink-3); border:1px solid rgba(140,165,220,0.18); border-radius:9px;
+    color:var(--paper-text); padding:8px 10px; cursor:pointer; font-size:.85rem; font-weight:600;
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .tech-btn:hover{background:var(--ink-2); border-color:var(--accent);}
+  .tech-btn .shape{color:var(--accent);}
+
+  /* ---------- RESULTS ---------- */
+  #scene-results{align-items:center; justify-content:flex-start; text-align:center; gap:18px; padding-top:clamp(18px,3vw,36px);}
+  .results-card{max-width:700px; display:flex; flex-direction:column; gap:16px; align-items:center; margin:0 auto;}
+  .stat-row{display:flex; gap:clamp(20px,5vw,56px); flex-wrap:wrap; justify-content:center;}
+  .stat{display:flex; flex-direction:column; gap:2px;}
+  .stat .n{font:800 var(--fs-stat)/1 var(--font-mono); font-variant-numeric:tabular-nums;}
+  .stat .l{font:700 .72rem/1 var(--font-body); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:6px;}
+  .stat.on .n{color:var(--green);}
+  .stat.off .n{color:var(--red);}
+
+  .final-bar{width:min(480px,80vw); height:14px; border-radius:999px; overflow:hidden; display:flex; background:var(--ink-3);}
+  .final-bar span{height:100%;}
+
+  .insight-line{
+    max-width:56ch; margin:0; font-size:var(--fs-body); line-height:1.55;
+    color:var(--paper-text); background:rgba(76,141,255,0.1);
+    border:1px solid rgba(76,141,255,0.3); border-radius:12px; padding:12px 18px;
+  }
+
+  .facts-roll{
+    display:flex; flex-direction:column; gap:16px; align-items:center;
+    width:100%; max-width:620px; min-height:150px; justify-content:center;
+    transition:opacity .4s ease;
+  }
+  .facts-roll.hide{opacity:0;}
+  .fact-label{font:700 .78rem/1 var(--font-body); letter-spacing:.12em; text-transform:uppercase; color:var(--accent);}
+  .fact-text{
+    margin:0; font:700 clamp(1.2rem,3vw,1.7rem)/1.42 var(--font-display);
+    color:var(--paper-text); max-width:32ch; text-wrap:balance;
+    opacity:0; transition:opacity .5s ease;
+  }
+  .fact-text.in{opacity:1;}
+  .fact-dots{display:flex; gap:9px;}
+  .fact-dot{width:7px; height:7px; border-radius:50%; background:rgba(140,165,220,0.3); transition:background .3s ease, transform .3s ease;}
+  .fact-dot.active{background:var(--accent); transform:scale(1.35);}
+
+  .tagline{
+    margin:2px 0 0; font:800 clamp(1.35rem,3.2vw,2rem)/1.25 var(--font-display); text-wrap:balance;
+    opacity:0; transition:opacity .6s ease;
+  }
+  .tagline.show{opacity:1;}
+
+  .cta-primary{
+    display:inline-flex; align-items:center; gap:10px; justify-content:center;
+    font:800 1.1rem/1 var(--font-display); text-decoration:none;
+    color:white; background:linear-gradient(135deg,var(--accent-deep),var(--green));
+    border-radius:999px; padding:18px 40px; margin-top:4px;
+    box-shadow:0 10px 30px rgba(46,91,224,0.4);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .cta-primary:hover{transform:translateY(-2px); box-shadow:0 14px 36px rgba(46,91,224,0.5);}
+  .cta-sub{margin:0; font-size:.78rem; color:var(--muted);}
+
+  .results-actions{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:2px;}
+  .replay-btn{
+    font:700 .85rem/1 var(--font-display);
+    color:var(--muted); background:transparent;
+    border:1.5px solid rgba(140,165,220,0.3); border-radius:999px;
+    padding:10px 22px; cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .replay-btn:hover{background:var(--ink-3); color:var(--paper-text); border-color:var(--accent);}
+
+  @media (prefers-reduced-motion:reduce){
+    .start-btn, .replay-btn, .variant-card{transition:none;}
+  }
+
+  @media (max-width:640px){
+    .menu-grid{grid-template-columns:1fr; max-width:320px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <section class="scene active" id="scene-menu">
+    <div class="menu-head">
+      <div class="eyebrow">Giga · a UNICEF–ITU initiative</div>
+      <h1>Light Up Every School</h1>
+      <p>Every dot is a real classroom. Pick how you want to play — each mode teaches a different piece of the connectivity gap.</p>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
+
+  <section class="scene" id="scene-intro">
+    <div class="intro-card">
+      <div class="mode-badge" id="modeBadge">Signal Rush</div>
+      <h1 id="introHeroLine">Every dot on this map is a real classroom.</h1>
+      <p id="introBody">You'll get 45 seconds and 14 tokens — not nearly enough for all 60 schools. Choose where connectivity matters most.</p>
+      <div class="intro-map-preview" aria-hidden="true">
+        <div class="preview-dot" style="background:var(--red)"></div>
+        <div class="preview-dot" style="background:var(--red)"></div>
+        <div class="preview-dot" style="background:var(--amber)"></div>
+        <div class="preview-dot" style="background:var(--green)"></div>
+        <div class="preview-dot" style="background:var(--red)"></div>
+        <div class="preview-dot" style="background:var(--amber)"></div>
+      </div>
+      <button class="start-btn" id="startBtn">Start the map →</button>
+      <button class="back-link" id="backToMenuBtn">← Choose a different mode</button>
+    </div>
+  </section>
+
+  <section class="scene" id="scene-play">
+    <div class="hud">
+      <div class="hud-block">
+        <div class="hud-label" id="hudConnectedLabel">Connected</div>
+        <div class="hud-value connected" id="hudConnected">00 / 60</div>
+      </div>
+      <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+      <div class="hud-block">
+        <div class="hud-label">Time</div>
+        <div class="hud-value timer" id="hudTimer">45s</div>
+      </div>
+      <div class="hud-block">
+        <div class="hud-label">Tokens left</div>
+        <div class="hud-value tokens" id="hudTokens">14</div>
+      </div>
+    </div>
+    <div class="map-wrap">
+      <canvas id="mapCanvas"></canvas>
+      <div class="toast" id="toast"></div>
+      <div class="tech-picker" id="techPicker">
+        <div class="tech-timeout-bar" id="techTimeoutBar"></div>
+        <button class="tech-btn" data-tech="fiber"><span class="shape shape-square"></span><span>Fiber</span></button>
+        <button class="tech-btn" data-tech="satellite"><span class="shape shape-triangle" style="border-bottom-color:var(--accent)"></span><span>Satellite</span></button>
+        <button class="tech-btn" data-tech="mobile"><span class="shape shape-circle"></span><span>Mobile</span></button>
+      </div>
+    </div>
+    <p class="play-hint" id="playHint">Tap a red or amber school to invest a token. <b>Amber</b> needs one tap to go live — <b>red</b> needs two.</p>
+  </section>
+
+  <section class="scene" id="scene-results">
+    <div class="results-card">
+      <div class="eyebrow" id="resEyebrow">Your 45 seconds, in numbers</div>
+      <div class="stat-row">
+        <div class="stat on"><div class="n" id="resConnected">0</div><div class="l">Now online</div></div>
+        <div class="stat off"><div class="n" id="resWaiting">60</div><div class="l">Still waiting</div></div>
+      </div>
+      <div class="final-bar" id="finalBar"></div>
+      <p class="insight-line" id="insightLine"></p>
+
+      <div class="facts-roll" id="factsRoll">
+        <div class="fact-label" id="factLabel">Why this matters</div>
+        <p class="fact-text" id="factText"></p>
+        <div class="fact-dots" id="factDots"></div>
+      </div>
+      <p class="tagline" id="tagline">Every dot is a school. Every school is a future.</p>
+
+      <a class="cta-primary" id="ctaMap" href="https://maps.giga.global/map" target="_blank" rel="noopener noreferrer">Explore the real Giga map →</a>
+      <p class="cta-sub">See every school like the ones you just played — live.</p>
+
+      <div class="results-actions">
+        <button class="replay-btn" id="replayBtn">Play again</button>
+        <button class="replay-btn" id="changeModeBtn">Choose another mode</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var TOTAL_SCHOOLS = 60;
+  var PRIORITY_COUNT = 6;
+  var COLORS = { red:'#ff5c6c', amber:'#ffb84d', green:'#33e1a0', accent:'#4c8dff' };
+  var TERRAIN_SHAPE = { urban:'square', remote:'triangle', midrange:'circle' };
+  var TECH_SHAPE = { fiber:'square', satellite:'triangle', mobile:'circle' };
+  var TERRAIN_KEYS = Object.keys(TERRAIN_SHAPE);
+
+  var VARIANTS = {
+    rush: {
+      key:'rush', name:'Signal Rush', seconds:45, tokens:14,
+      iconShape:'square',
+      cardLine:'Fast triage under pressure. One tap, one token.',
+      heroLine:'Every dot on this map is a real classroom.',
+      introBody:"You'll get 45 seconds and 14 tokens — not nearly enough for all 60 schools. Choose where connectivity matters most.",
+      hint:'Tap a red or amber school to invest a token. <b>Amber</b> needs one tap to go live — <b>red</b> needs two.',
+      resultsEyebrow:'Your 45 seconds, in numbers'
+    },
+    fix: {
+      key:'fix', name:'Choose the Fix', seconds:50, tokens:12,
+      iconShape:'triangle',
+      cardLine:'Match fiber, satellite, or mobile to the right school.',
+      heroLine:'Not every school needs the same fix.',
+      introBody:"Each school hints at its terrain with a small shape. Tap it, then match that shape to the right technology before the window closes.",
+      hint:'Tap a school, then match its terrain shape to the right technology.',
+      resultsEyebrow:'Your 50 seconds, in numbers'
+    },
+    ripple: {
+      key:'ripple', name:'The Ripple', seconds:45, tokens:14,
+      iconShape:'circle',
+      cardLine:"Play solo — but your total joins the booth's tally.",
+      heroLine:"You're not playing alone.",
+      introBody:"This map remembers every player before you. 45 seconds, 14 tokens — pick up where the last visitor left off, and add to the booth's running total.",
+      hint:'Tap a red or amber school to invest a token. Your total joins today’s booth count.',
+      resultsEyebrow:'Your 45 seconds, in numbers'
+    }
+  };
+
+  var FACTS = [
+    { label:'The gap', text:'An estimated 1 in 3 schools worldwide has no internet connection at all.' },
+    { label:'The stakes', text:'Without it, students miss out on digital learning, information, and connection to opportunity — not by choice.' },
+    { label:'The first step', text:"Giga maps every school's real connectivity status, so governments and partners know exactly where to act first." }
+  ];
+
+  var sceneMenu = document.getElementById('scene-menu');
+  var sceneIntro = document.getElementById('scene-intro');
+  var scenePlay = document.getElementById('scene-play');
+  var sceneResults = document.getElementById('scene-results');
+  var menuGrid = document.getElementById('menuGrid');
+  var modeBadge = document.getElementById('modeBadge');
+  var introHeroLine = document.getElementById('introHeroLine');
+  var introBodyEl = document.getElementById('introBody');
+  var startBtn = document.getElementById('startBtn');
+  var backToMenuBtn = document.getElementById('backToMenuBtn');
+  var replayBtn = document.getElementById('replayBtn');
+  var changeModeBtn = document.getElementById('changeModeBtn');
+  var hudConnected = document.getElementById('hudConnected');
+  var hudTimer = document.getElementById('hudTimer');
+  var hudTokens = document.getElementById('hudTokens');
+  var timerFill = document.getElementById('timerFill');
+  var toastEl = document.getElementById('toast');
+  var playHint = document.getElementById('playHint');
+  var resEyebrow = document.getElementById('resEyebrow');
+  var insightLine = document.getElementById('insightLine');
+  var factsRoll = document.getElementById('factsRoll');
+  var factLabel = document.getElementById('factLabel');
+  var factText = document.getElementById('factText');
+  var factDots = document.getElementById('factDots');
+  var taglineEl = document.getElementById('tagline');
+  var techPicker = document.getElementById('techPicker');
+  var canvas = document.getElementById('mapCanvas');
+  var ctx = canvas.getContext('2d');
+
+  var currentVariant = 'rush';
+  var dots = [], travels = [], bursts = [];
+  var hub = { x:0.5, y:0.12 };
+  var tokensLeft, timeLeft, connectedCount, opportunityScore, running, rafId, lastFrame;
+  var toastTimer = null;
+  var pickerOpen = false, currentPickerDot = null, pickerTimeout = null;
+  var stats = { redFull:0, amberQuick:0, techCorrect:0, techTotal:0 };
+
+  function showScene(el){
+    [sceneMenu, sceneIntro, scenePlay, sceneResults].forEach(function(s){ s.classList.remove('active'); });
+    el.classList.add('active');
+  }
+
+  function rand(min,max){ return min + Math.random()*(max-min); }
+
+  function buildMenu(){
+    Object.keys(VARIANTS).forEach(function(key){
+      var v = VARIANTS[key];
+      var card = document.createElement('button');
+      card.className = 'variant-card';
+      card.innerHTML =
+        '<div class="variant-icon"><span class="shape shape-' + v.iconShape + '"' +
+          (v.iconShape==='triangle' ? ' style="border-bottom-color:var(--accent)"' : '') + '></span></div>' +
+        '<h3>' + v.name + '</h3>' +
+        '<p>' + v.cardLine + '</p>' +
+        '<div class="variant-meta">' + v.seconds + 's &middot; ' + v.tokens + ' tokens</div>';
+      card.addEventListener('click', function(){ selectVariant(key); });
+      menuGrid.appendChild(card);
+    });
+  }
+
+  function selectVariant(key){
+    currentVariant = key;
+    var v = VARIANTS[key];
+    modeBadge.textContent = v.name;
+    introHeroLine.textContent = v.heroLine;
+    introBodyEl.textContent = v.introBody;
+    playHint.innerHTML = v.hint;
+    resEyebrow.textContent = v.resultsEyebrow;
+    showScene(sceneIntro);
+  }
+
+  function buildDots(){
+    dots = [];
+    var attempts, x, y, ok, minDist = 0.062;
+    for (var i=0; i<TOTAL_SCHOOLS; i++){
+      attempts = 0; ok = false;
+      while (!ok && attempts < 100){
+        x = rand(0.05, 0.95);
+        y = rand(0.20, 0.94);
+        ok = true;
+        for (var j=0; j<dots.length; j++){
+          var dx = dots[j].x - x, dy = dots[j].y - y;
+          if (Math.sqrt(dx*dx+dy*dy) < minDist){ ok = false; break; }
+        }
+        attempts++;
+      }
+      dots.push({
+        x:x, y:y, status:'red', initialStatus:'red', priority:false, pending:false,
+        phase:rand(0,Math.PI*2), terrain: TERRAIN_KEYS[Math.floor(Math.random()*TERRAIN_KEYS.length)]
+      });
+    }
+    var greenCount = Math.round(TOTAL_SCHOOLS*0.22);
+    var amberCount = Math.round(TOTAL_SCHOOLS*0.36);
+    var order = dots.map(function(_,i){return i;});
+    for (var k=order.length-1;k>0;k--){ var r=Math.floor(Math.random()*(k+1)); var t=order[k]; order[k]=order[r]; order[r]=t; }
+    order.forEach(function(idx, pos){
+      var status = pos < greenCount ? 'green' : (pos < greenCount+amberCount ? 'amber' : 'red');
+      dots[idx].status = status;
+      dots[idx].initialStatus = status;
+    });
+    var eligible = dots.filter(function(d){ return d.status !== 'green'; });
+    for (var p=0; p<PRIORITY_COUNT && eligible.length; p++){
+      var pick = eligible.splice(Math.floor(Math.random()*eligible.length), 1)[0];
+      pick.priority = true;
+    }
+  }
+
+  function loadRippleMap(){
+    try{
+      var raw = localStorage.getItem('gigaRippleDots');
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || parsed.length !== TOTAL_SCHOOLS) return null;
+      return parsed;
+    } catch(e){ return null; }
+  }
+
+  function saveRippleMap(){
+    try{
+      var serializable = dots.map(function(d){
+        return { x:d.x, y:d.y, status:d.status, priority:d.priority, phase:d.phase, terrain:d.terrain };
+      });
+      localStorage.setItem('gigaRippleDots', JSON.stringify(serializable));
+    } catch(e){ /* storage unavailable, safe to ignore */ }
+  }
+
+  function cloneRippleDot(raw){
+    return {
+      x:raw.x, y:raw.y, status:raw.status, initialStatus:raw.status,
+      priority:raw.priority, pending:false, phase:raw.phase, terrain:raw.terrain
+    };
+  }
+
+  function resize(){
+    var rect = canvas.parentElement.getBoundingClientRect();
+    var dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function toCanvasXY(d){
+    var rect = canvas.getBoundingClientRect();
+    return { x: d.x*rect.width, y: d.y*rect.height };
+  }
+
+  function drawGrid(w,h){
+    ctx.strokeStyle = 'rgba(140,165,220,0.08)';
+    ctx.lineWidth = 1;
+    var step = 34;
+    for (var gx=0; gx<w; gx+=step){ ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,h); ctx.stroke(); }
+    for (var gy=0; gy<h; gy+=step){ ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(w,gy); ctx.stroke(); }
+  }
+
+  function drawHub(w,h){
+    var hx = hub.x*w, hy = hub.y*h;
+    ctx.save();
+    ctx.strokeStyle = COLORS.accent;
+    ctx.fillStyle = COLORS.accent;
+    ctx.globalAlpha = 0.9;
+    ctx.beginPath(); ctx.moveTo(hx,hy-14); ctx.lineTo(hx,hy+8); ctx.lineWidth=2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(hx,hy-16,3,0,Math.PI*2); ctx.fill();
+    ctx.globalAlpha = 0.35;
+    for (var ring=0; ring<2; ring++){
+      ctx.beginPath();
+      ctx.arc(hx, hy-14, 8+ring*7, Math.PI*1.15, Math.PI*1.85);
+      ctx.stroke();
+    }
+    ctx.restore();
+    ctx.fillStyle = 'rgba(143,160,192,0.8)';
+    ctx.font = "700 10px 'Cascadia Code', Consolas, monospace";
+    ctx.textAlign = 'center';
+    ctx.fillText('ACCESS POINT', hx, hy+22);
+  }
+
+  function canvasShape(shape, x, y, size, color){
+    ctx.save();
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1.4;
+    if (shape === 'square'){
+      ctx.strokeRect(x-size/2, y-size/2, size, size);
+    } else if (shape === 'triangle'){
+      ctx.beginPath();
+      ctx.moveTo(x, y-size/1.6);
+      ctx.lineTo(x-size/1.6, y+size/2.2);
+      ctx.lineTo(x+size/1.6, y+size/2.2);
+      ctx.closePath();
+      ctx.stroke();
+    } else if (shape === 'circle'){
+      ctx.beginPath();
+      ctx.arc(x, y, size/1.8, 0, Math.PI*2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawDot(d, t){
+    var p = toCanvasXY(d);
+    var color = COLORS[d.status];
+    var baseR = d.priority ? 8.5 : 6.5;
+
+    if ((d.status === 'red' || d.status === 'amber') && !d.pending && !reduceMotion){
+      var cyc = ((t/1400) + d.phase) % (Math.PI*2);
+      var pulse = (Math.sin(cyc)+1)/2;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, baseR + 6 + pulse*10, 0, Math.PI*2);
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = 0.18 + pulse*0.12;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    if (d.priority){
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, baseR+5, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.lineWidth = 1.3;
+      ctx.setLineDash([2,3]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    if (currentVariant === 'fix' && d.status !== 'green'){
+      canvasShape(TERRAIN_SHAPE[d.terrain], p.x, p.y - baseR - 13, 13, 'rgba(237,239,245,0.5)');
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, baseR, 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = d.pending ? 4 : 10;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  function drawTravels(dt){
+    for (var i=travels.length-1; i>=0; i--){
+      var tr = travels[i];
+      tr.t += dt;
+      var f = Math.min(1, tr.t/tr.duration);
+      var rect = canvas.getBoundingClientRect();
+      var hx = hub.x*rect.width, hy = hub.y*rect.height;
+      var dp = toCanvasXY(tr.dot);
+      var midX = (hx+dp.x)/2, midY = Math.min(hy,dp.y) - 40;
+      var x = (1-f)*(1-f)*hx + 2*(1-f)*f*midX + f*f*dp.x;
+      var y = (1-f)*(1-f)*hy + 2*(1-f)*f*midY + f*f*dp.y;
+      ctx.beginPath();
+      ctx.arc(x,y,4,0,Math.PI*2);
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = COLORS.accent;
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      if (f >= 1){
+        if (tr.tech) handleTechChoice(tr.dot, tr.tech);
+        else applyUpgrade(tr.dot);
+        travels.splice(i,1);
+      }
+    }
+  }
+
+  function drawBursts(dt){
+    for (var i=bursts.length-1; i>=0; i--){
+      var b = bursts[i];
+      b.t += dt;
+      var f = b.t / b.duration;
+      if (f >= 1){ bursts.splice(i,1); continue; }
+      var p = toCanvasXY(b);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 6 + f*26, 0, Math.PI*2);
+      ctx.strokeStyle = b.color;
+      ctx.globalAlpha = 1-f;
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function registerConnected(d){
+    connectedCount++;
+    opportunityScore += d.priority ? 2 : 1;
+    if (d.initialStatus === 'red') stats.redFull++; else stats.amberQuick++;
+    updateHud();
+  }
+
+  function applyUpgrade(d){
+    d.pending = false;
+    var wasGreen = d.status === 'green';
+    if (d.status === 'red') d.status = 'amber';
+    else if (d.status === 'amber') d.status = 'green';
+    bursts.push({ x:d.x, y:d.y, t:0, duration:520, color: COLORS[d.status] });
+    if (d.status === 'green' && !wasGreen) registerConnected(d);
+  }
+
+  function handleTechChoice(d, tech){
+    d.pending = false;
+    stats.techTotal++;
+    var correct = TECH_SHAPE[tech] === TERRAIN_SHAPE[d.terrain];
+    if (correct) stats.techCorrect++;
+    var wasGreen = d.status === 'green';
+    if (d.status === 'red') d.status = correct ? 'green' : 'amber';
+    else if (d.status === 'amber' && correct) d.status = 'green';
+    bursts.push({ x:d.x, y:d.y, t:0, duration:520, color: COLORS[d.status] });
+    showToast(correct ? 'Right fit ✓' : 'Mismatched — signal wasted', 900);
+    if (d.status === 'green' && !wasGreen) registerConnected(d);
+  }
+
+  function updateHud(){
+    hudConnected.textContent = String(connectedCount).padStart(2,'0') + ' / ' + TOTAL_SCHOOLS;
+    hudTokens.textContent = String(Math.max(tokensLeft,0)).padStart(2,'0');
+  }
+
+  function showToast(msg, ms){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, ms || 1200);
+  }
+
+  function loop(ts){
+    if (!running) return;
+    var dt = lastFrame ? ts - lastFrame : 16;
+    lastFrame = ts;
+    var rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0,0,rect.width,rect.height);
+    drawGrid(rect.width,rect.height);
+    drawHub(rect.width,rect.height);
+    dots.forEach(function(d){ drawDot(d,ts); });
+    drawTravels(dt);
+    drawBursts(dt);
+    rafId = requestAnimationFrame(loop);
+  }
+
+  var tickInterval = null;
+  function startTimers(seconds){
+    timeLeft = seconds;
+    tickInterval = setInterval(function(){
+      timeLeft -= 1;
+      hudTimer.textContent = Math.max(timeLeft,0) + 's';
+      timerFill.style.width = Math.max(0, (timeLeft/seconds)*100) + '%';
+      if (timeLeft <= 0){
+        clearInterval(tickInterval);
+        showToast("Time's up", 1100);
+        setTimeout(endGame, 1100);
+      }
+    }, 1000);
+  }
+
+  function checkResourcesExhausted(){
+    if (tokensLeft <= 0 && travels.length === 0 && !pickerOpen && running){
+      running = false;
+      clearInterval(tickInterval);
+      cancelAnimationFrame(rafId);
+      showToast('Out of tokens', 1200);
+      setTimeout(endGame, 1200);
+    }
+  }
+
+  function pickerPosition(d){
+    var wrapRect = canvas.parentElement.getBoundingClientRect();
+    var p = toCanvasXY(d);
+    var left = Math.min(Math.max(p.x-105, 8), wrapRect.width-218);
+    var top = p.y-150 < 8 ? p.y+20 : p.y-150;
+    top = Math.min(Math.max(top, 8), wrapRect.height-160);
+    techPicker.style.left = left + 'px';
+    techPicker.style.top = top + 'px';
+  }
+
+  function openTechPicker(d){
+    currentPickerDot = d;
+    d.pending = true;
+    pickerOpen = true;
+    pickerPosition(d);
+    techPicker.classList.remove('show');
+    void techPicker.offsetWidth;
+    techPicker.classList.add('show');
+    clearTimeout(pickerTimeout);
+    pickerTimeout = setTimeout(function(){ closeTechPicker(); }, 2500);
+  }
+
+  function closeTechPicker(){
+    techPicker.classList.remove('show');
+    pickerOpen = false;
+    if (currentPickerDot) currentPickerDot.pending = false;
+    currentPickerDot = null;
+    clearTimeout(pickerTimeout);
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.tech-btn'), function(btn){
+    btn.addEventListener('click', function(){
+      if (!pickerOpen || !currentPickerDot) return;
+      var chosen = btn.getAttribute('data-tech');
+      var d = currentPickerDot;
+      clearTimeout(pickerTimeout);
+      techPicker.classList.remove('show');
+      pickerOpen = false;
+      currentPickerDot = null;
+      if (tokensLeft <= 0){ d.pending = false; showToast('No tokens left', 900); return; }
+      tokensLeft -= 1;
+      updateHud();
+      travels.push({ dot:d, t:0, duration:600, tech:chosen });
+    });
+  });
+
+  canvas.addEventListener('click', function(e){
+    if (!running || pickerOpen) return;
+    var rect = canvas.getBoundingClientRect();
+    var mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    var hit = null, hitDist = 22;
+    dots.forEach(function(d){
+      var p = toCanvasXY(d);
+      var dist = Math.sqrt((p.x-mx)*(p.x-mx) + (p.y-my)*(p.y-my));
+      if (dist < hitDist){ hit = d; hitDist = dist; }
+    });
+    if (!hit) return;
+    if (hit.status === 'green' || hit.pending) return;
+    if (tokensLeft <= 0){ showToast('No tokens left', 900); return; }
+    if (currentVariant === 'fix'){
+      openTechPicker(hit);
+    } else {
+      tokensLeft -= 1;
+      hit.pending = true;
+      updateHud();
+      travels.push({ dot:hit, t:0, duration:600 });
+    }
+  });
+
+  function finalCounts(){
+    var g=0,a=0,r=0;
+    dots.forEach(function(d){ if(d.status==='green')g++; else if(d.status==='amber')a++; else r++; });
+    return {g:g,a:a,r:r};
+  }
+
+  function buildInsight(){
+    if (currentVariant === 'fix'){
+      if (stats.techTotal === 0) return "You ran out of time before matching a single school — in the field, that decision window is even shorter.";
+      return 'You matched the right technology ' + stats.techCorrect + ' out of ' + stats.techTotal + ' times. A wrong match still costs a token — just like a mismatched rollout costs real budget.';
+    }
+    if (currentVariant === 'ripple'){
+      var total = parseInt(localStorage.getItem('gigaBoothTotal') || '0', 10) + connectedCount;
+      var plays = parseInt(localStorage.getItem('gigaBoothPlays') || '0', 10) + 1;
+      localStorage.setItem('gigaBoothTotal', String(total));
+      localStorage.setItem('gigaBoothPlays', String(plays));
+      return 'Booth total today: ' + total + ' schools connected across ' + plays + ' play' + (plays===1?'':'s') + '. Every visitor adds to the same map.';
+    }
+    if (stats.redFull === 0 && stats.amberQuick === 0) return "You ran out of time before connecting a single school — that's how fast the window closes for real communities too.";
+    return 'You fully connected ' + stats.redFull + ' hardest-to-reach school' + (stats.redFull===1?'':'s') + ' (2 tokens each) and finished ' + stats.amberQuick + ' that were already partway there. Reaching the last mile always costs more.';
+  }
+
+  var factDotEls = [];
+  function buildFactDots(){
+    FACTS.forEach(function(){
+      var dot = document.createElement('div');
+      dot.className = 'fact-dot';
+      factDots.appendChild(dot);
+      factDotEls.push(dot);
+    });
+  }
+
+  var factsRollId = 0;
+  function startFactsRoll(){
+    factsRollId++;
+    var myId = factsRollId;
+    taglineEl.classList.remove('show');
+    factsRoll.style.display = 'flex';
+    factsRoll.classList.remove('hide');
+    var idx = 0;
+    function step(){
+      if (myId !== factsRollId) return;
+      factLabel.textContent = FACTS[idx].label;
+      factText.textContent = FACTS[idx].text;
+      factDotEls.forEach(function(dot, i){ dot.classList.toggle('active', i === idx); });
+      factText.classList.remove('in');
+      void factText.offsetWidth;
+      factText.classList.add('in');
+      idx++;
+      if (idx < FACTS.length){
+        setTimeout(step, 3000);
+      } else {
+        setTimeout(function(){
+          if (myId !== factsRollId) return;
+          factsRoll.classList.add('hide');
+          setTimeout(function(){
+            if (myId !== factsRollId) return;
+            factsRoll.style.display = 'none';
+            taglineEl.classList.add('show');
+          }, 400);
+        }, 3000);
+      }
+    }
+    step();
+  }
+
+  function endGame(){
+    running = false;
+    clearInterval(tickInterval);
+    cancelAnimationFrame(rafId);
+    closeTechPicker();
+    if (currentVariant === 'ripple') saveRippleMap();
+    var c = finalCounts();
+    document.getElementById('resConnected').textContent = connectedCount;
+    document.getElementById('resWaiting').textContent = TOTAL_SCHOOLS - connectedCount;
+    var bar = document.getElementById('finalBar');
+    bar.innerHTML = '';
+    [['green',c.g],['amber',c.a],['red',c.r]].forEach(function(pair){
+      if (pair[1] <= 0) return;
+      var span = document.createElement('span');
+      span.style.width = (pair[1]/TOTAL_SCHOOLS*100) + '%';
+      span.style.background = COLORS[pair[0]];
+      bar.appendChild(span);
+    });
+    insightLine.textContent = buildInsight();
+    showScene(sceneResults);
+    startFactsRoll();
+  }
+
+  function startGame(){
+    var v = VARIANTS[currentVariant];
+    var announceNewRegion = false;
+    if (currentVariant === 'ripple'){
+      var saved = loadRippleMap();
+      if (saved){
+        var allGreen = saved.every(function(d){ return d.status === 'green'; });
+        if (allGreen){ buildDots(); announceNewRegion = true; }
+        else { dots = saved.map(cloneRippleDot); }
+      } else {
+        buildDots();
+      }
+    } else {
+      buildDots();
+    }
+    tokensLeft = v.tokens;
+    connectedCount = 0;
+    opportunityScore = 0;
+    stats = { redFull:0, amberQuick:0, techCorrect:0, techTotal:0 };
+    travels = []; bursts = [];
+    updateHud();
+    hudTimer.textContent = v.seconds + 's';
+    timerFill.style.width = '100%';
+    showScene(scenePlay);
+    resize();
+    running = true;
+    lastFrame = null;
+    startTimers(v.seconds);
+    rafId = requestAnimationFrame(loop);
+    var watchdog = setInterval(function(){
+      if (!running){ clearInterval(watchdog); return; }
+      checkResourcesExhausted();
+    }, 300);
+    if (announceNewRegion) setTimeout(function(){ showToast('Map fully connected — new region unlocked!', 2000); }, 350);
+  }
+
+  buildMenu();
+  buildFactDots();
+  startBtn.addEventListener('click', startGame);
+  backToMenuBtn.addEventListener('click', function(){ showScene(sceneMenu); });
+  replayBtn.addEventListener('click', startGame);
+  changeModeBtn.addEventListener('click', function(){ showScene(sceneMenu); });
+  window.addEventListener('resize', function(){ if (scenePlay.classList.contains('active')) resize(); });
+
+})();
+</script>
+</body>
+</html>
