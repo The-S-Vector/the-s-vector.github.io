@@ -1,0 +1,126 @@
+<!--
+  template-post.html — COPY THIS FILE to start a new note.
+  ================================================================
+  Steps to publish a new note:
+    1. Copy this file, rename it something like
+       2026-10-01-my-post-title.html (date first, so files sort
+       chronologically in your file browser).
+    2. Edit the <title>, the <h1>, the meta line (date, reading
+       time, tags), and write the article inside <article class="prose">.
+    3. Add a matching <div class="card"> link in blog/index.html
+       (at the top of the list, since it's newest).
+
+  Everything marked PLACEHOLDER is meant to be replaced. Everything
+  else (sidebar, footer, script tags) should stay as-is — it's the
+  same boilerplate every page uses.
+
+  This template is written to read as a standalone article (like
+  castel.dev's posts): a title, a byline, and then the content —
+  with an optional footnotes section at the very bottom, since
+  that's a common pattern for asides in long-form technical writing.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- PLACEHOLDER: page title, shown in the browser tab and search results -->
+  <title>Post Title Here — The S Vector</title>
+  <meta name="description" content="PLACEHOLDER: one sentence describing this note.">
+  <meta name="author" content="Sebastian Turner">
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-section="notes">
+
+  <nav class="site-sidebar">
+    <div class="sidebar-inner">
+      <a class="sidebar-title" href="../index.html">The S Vector</a>
+      <div class="sidebar-links">
+        <a href="../eclecticon/index.html">Eclecticon</a>
+        <a href="../books/index.html">Books</a>
+        <a href="../photos/index.html">Photos</a>
+        <a href="../gap-year.html">Gap Year</a>
+        <a href="../academics/index.html">Coursework</a>
+        <a href="index.html" aria-current="page">Notes</a>
+        <a href="../about.html">About</a>
+        <a href="../giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container">
+      <article class="prose">
+
+        <!-- PLACEHOLDER: post title -->
+        <h1>Post Title Here</h1>
+
+        <!-- PLACEHOLDER: date + reading time (estimate it yourself —
+             there's no build step to calculate this automatically:
+             roughly 200 words per minute of reading is a fine rule
+             of thumb). Keep this format so notes read consistently. -->
+        <p class="post-meta">September 13, 2026 &middot; 5 min read</p>
+
+        <!-- PLACEHOLDER: tag(s) describing what this note is about.
+             Pick from the fixed palette in style.css section 10 —
+             any .tag-c1 through .tag-c12 class works. -->
+        <p><span class="tag tag-c11">Tag</span></p>
+
+        <!-- PLACEHOLDER: the note itself. Plain HTML tags to use:
+               <p>...</p>          a paragraph
+               <h2>...</h2>        a section heading within the note
+               <img src="..." alt="..."> an image
+               <a href="...">...</a>  a link
+               <blockquote>...</blockquote>  a quotation
+               <code>...</code>    inline code
+               <pre><code>...</code></pre>  a code block
+               <sup><a href="#fn1" id="fnref1">1</a></sup>  a footnote
+                    reference — see the footnotes example at the
+                    bottom of this file, and delete both if you don't
+                    need footnotes in this particular note.
+        -->
+        <p>Start writing here.</p>
+
+        <p>
+          A footnote reference looks like this<sup><a href="#fn1" id="fnref1">1</a></sup> —
+          click it to jump to the note at the bottom of the page.
+        </p>
+
+        <!-- PLACEHOLDER footnotes section — delete this whole <div>
+             if the note doesn't need any footnotes. -->
+        <div class="footnotes">
+          <ol>
+            <li id="fn1">
+              This is the footnote text. <a href="#fnref1">&uarr; back to text</a>
+            </li>
+          </ol>
+        </div>
+
+        <p><a href="index.html">&larr; Back to all notes</a></p>
+
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+    </footer>
+  </div>
+
+  <script src="../theme.js" defer></script>
+</body>
+</html>
