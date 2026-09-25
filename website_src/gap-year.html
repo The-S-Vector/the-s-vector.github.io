@@ -1,0 +1,233 @@
+<!--
+  gap-year.html — a gap year in New Zealand: travel plans, journal,
+  places visited, hikes done, and Strava stats.
+  ================================================================
+  One single page rather than five subpages, since you asked for a
+  top bar menu instead of index-cards here. Uses the same .page-tabs
+  in-page menu as academics/personal-projects.html: a small bar of
+  anchor links at the top, each pointing at a <section id="..."> on
+  this same page — plain HTML, no JavaScript. It's "position: sticky"
+  in CSS, so it stays visible near the top of the window as you
+  scroll down through the sections.
+
+  This file lives at the root (like about.html), not in its own
+  folder, because — unlike notes/ or eclecticon/ — it doesn't have
+  separate subpages of its own; everything is one page with in-page
+  sections.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gap Year — The S Vector</title>
+  <meta name="description" content="A gap year in New Zealand: travel plans, journal, places visited, hikes, and Strava stats.">
+  <meta name="author" content="Sebastian Turner">
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-section="gapyear">
+
+  <nav class="site-sidebar">
+    <div class="sidebar-inner">
+      <a class="sidebar-title" href="index.html">The S Vector</a>
+      <div class="sidebar-links">
+        <a href="eclecticon/index.html">Eclecticon</a>
+        <a href="books/index.html">Books</a>
+        <a href="photos/index.html">Photos</a>
+        <a href="gap-year.html" aria-current="page">Gap Year</a>
+        <a href="academics/index.html">Coursework</a>
+        <a href="notes/index.html">Notes</a>
+        <a href="about.html">About</a>
+        <a href="giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container">
+      <h1>Gap Year — New Zealand</h1>
+      <!-- PLACEHOLDER intro -->
+      <p class="text-muted">
+        Everything from my gap year in New Zealand: where I'm headed, what
+        I'm writing down along the way, and the hikes I've done.
+      </p>
+
+      <!-- In-page menu — add a link here whenever you add a new
+           <section id="..."> below, matching ids. -->
+      <nav class="page-tabs" aria-label="Jump to a section">
+        <a href="#travel-plans">Travel Plans</a>
+        <a href="#journal">Journal</a>
+        <a href="#places">Places I've Been</a>
+        <a href="#hikes">Hikes</a>
+        <a href="#strava">Strava Stats</a>
+      </nav>
+
+      <!-- ============================================================
+           TRAVEL PLANS
+           ============================================================ -->
+      <section id="travel-plans">
+        <h2>Travel Plans</h2>
+        <p class="text-muted mt-0">Target sites — check one off once you've actually been.</p>
+
+        <!-- PLACEHOLDER checklist — one <li> per target site. Add the
+             word `checked` inside a box's <input> tag once you've
+             been there (e.g. <input type="checkbox" disabled checked>)
+             to tick it and strike it through — see style.css section
+             9D for how that works. The checkboxes are disabled on
+             purpose: this page has no JS/database behind it, so a
+             clickable-looking box that didn't actually save anything
+             would be misleading. -->
+        <ul class="checklist">
+          <li><label><input type="checkbox" disabled> PLACEHOLDER site name</label></li>
+          <li><label><input type="checkbox" disabled> PLACEHOLDER site name</label></li>
+          <li><label><input type="checkbox" disabled checked> PLACEHOLDER site name (already been)</label></li>
+        </ul>
+      </section>
+
+      <!-- ============================================================
+           JOURNAL — short dated entries, newest first. Copy one
+           <article class="entry"> per entry, same pattern as the
+           Notes list (notes/index.html), just written directly on
+           this page instead of as separate files, since these are
+           meant to be quick, not full standalone articles.
+           ============================================================ -->
+      <section id="journal">
+        <h2>Journal</h2>
+        <div class="entry-list">
+          <article class="entry">
+            <div class="entry-meta">
+              <span class="accent">PLACEHOLDER date</span>
+            </div>
+            <p>PLACEHOLDER — write a short journal entry here.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           PLACES I'VE BEEN — grouped by region/city so specific spots
+           (a restaurant, a climbing gym, a lookout) can be listed
+           without turning this into one giant flat list. Each region
+           is a <details class="place-group"> — collapsed by default,
+           only the region name (+ a count you update by hand) shows
+           until it's expanded. See style.css section 9E.
+
+           To add a new region: copy one whole <details> block, change
+           its summary text/count, and add .list-row entries inside.
+           To add a place to an existing region: copy one .list-row
+           inside that region's <details>.
+           ============================================================ -->
+      <section id="places">
+        <h2>Places I've Been</h2>
+        <div class="place-group-list">
+
+          <details class="place-group">
+            <summary>Queenstown <span class="count">(PLACEHOLDER count)</span></summary>
+            <div>
+              <div class="list-row">
+                <span>Fergburger</span>
+                <span class="list-row-meta">PLACEHOLDER date</span>
+              </div>
+              <div class="list-row">
+                <span>Faultline Climbing Gym</span>
+                <span class="list-row-meta">PLACEHOLDER date</span>
+              </div>
+            </div>
+          </details>
+
+          <details class="place-group">
+            <summary>PLACEHOLDER region <span class="count">(PLACEHOLDER count)</span></summary>
+            <div>
+              <div class="list-row">
+                <span>PLACEHOLDER place name</span>
+                <span class="list-row-meta">PLACEHOLDER date</span>
+              </div>
+            </div>
+          </details>
+
+        </div>
+      </section>
+
+      <!-- ============================================================
+           HIKES — one <article class="entry"> per hike, with a
+           <details> disclosure (same pattern as the camera settings
+           on photos/index.html) holding the distance/elevation/
+           duration/difficulty so the list itself stays scannable.
+           ============================================================ -->
+      <section id="hikes">
+        <h2>Hikes</h2>
+        <div class="entry-list">
+          <article class="entry">
+            <div class="entry-meta">
+              <span class="accent">PLACEHOLDER date</span>
+              <span>PLACEHOLDER region</span>
+            </div>
+            <h3>PLACEHOLDER hike name</h3>
+            <p>PLACEHOLDER — a sentence or two about the hike.</p>
+            <details class="photo-meta">
+              <summary>Hike details</summary>
+              <dl class="meta-list">
+                <dt>Distance</dt><dd>PLACEHOLDER</dd>
+                <dt>Elevation gain</dt><dd>PLACEHOLDER</dd>
+                <dt>Duration</dt><dd>PLACEHOLDER</dd>
+                <dt>Difficulty</dt><dd>PLACEHOLDER</dd>
+              </dl>
+            </details>
+          </article>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           STRAVA STATS — two options, pick whichever you actually
+           want to use:
+
+           OPTION A: paste Strava's own embed widget here (from your
+           Strava account's "Embed" settings on an activity, or their
+           embeddable athlete widget). That would add ONE external
+           <script> tag pulling from strava-embeds.com — the one
+           deliberate exception to "no libraries" on this site, since
+           it's the only way to show live Strava data at all.
+
+           OPTION B (below, no external script): a manually-updated
+           stats box, same <dl class="meta-list"> pattern used
+           elsewhere on the site. Less automatic, but zero external
+           dependencies.
+           ============================================================ -->
+      <section id="strava">
+        <h2>Strava Stats</h2>
+        <div class="callout">
+          <!-- OPTION A goes here instead, if you set it up:
+               <script src="https://strava-embeds.com/embed.js"></script>
+               <div class="strava-embed-placeholder" data-embed-type="athlete" data-embed-id="YOUR_ID" ...></div> -->
+          <p class="mt-0"><strong>This month</strong></p>
+          <dl class="meta-list">
+            <dt>Distance</dt><dd>PLACEHOLDER</dd>
+            <dt>Elevation gain</dt><dd>PLACEHOLDER</dd>
+            <dt>Activities</dt><dd>PLACEHOLDER</dd>
+          </dl>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+    </footer>
+  </div>
+
+  <script src="theme.js" defer></script>
+</body>
+</html>

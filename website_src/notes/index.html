@@ -1,0 +1,93 @@
+<!--
+  notes/index.html — lists every note, newest first, styled as a
+  standalone-article feed (title, date/reading time, short excerpt,
+  tag) rather than plain compact cards — closer to how a Substack
+  or similar article feed reads. See style.css section 9B: this is
+  .entry-list with the .article-list modifier, which just bumps up
+  the title size and treats the description as a real excerpt
+  instead of muted metadata.
+
+  There is no database and no build step: this list is just plain
+  HTML that you edit by hand. To publish a new note:
+
+    1. Copy notes/template-post.html to a new file, e.g.
+       notes/2026-10-01-some-title.html (dating the filename keeps
+       posts sortable in your file explorer / VS Code sidebar).
+    2. Write the note inside it (see the template for guidance).
+    3. Add ONE new <article class="entry"> block below, at the TOP
+       of the list (newest first), linking to your new file.
+
+  That's the entire publishing workflow.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notes — The S Vector</title>
+  <meta name="description" content="Standalone articles and notes by Sebastian Turner.">
+  <meta name="author" content="Sebastian Turner">
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-section="notes">
+
+  <nav class="site-sidebar">
+    <div class="sidebar-inner">
+      <a class="sidebar-title" href="../index.html">The S Vector</a>
+      <div class="sidebar-links">
+        <a href="../eclecticon/index.html">Eclecticon</a>
+        <a href="../books/index.html">Books</a>
+        <a href="../photos/index.html">Photos</a>
+        <a href="../gap-year.html">Gap Year</a>
+        <a href="../academics/index.html">Coursework</a>
+        <a href="index.html" aria-current="page">Notes</a>
+        <a href="../about.html">About</a>
+        <a href="../giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container">
+      <h1>Notes</h1>
+      <p class="text-muted">Standalone articles — things I wanted to think through in public.</p>
+
+      <!-- PLACEHOLDER example entry — copy this <article> block for
+           each new note, keep newest at the top. The tag should match
+           whatever the note is actually about — see style.css section
+           10 for the fixed palette of tag colors to pick from. -->
+      <div class="entry-list article-list">
+        <article class="entry">
+          <div class="entry-meta">
+            <span class="accent">September 13, 2026</span>
+            <span>3 min read</span>
+            <span class="tag tag-c11">Meta</span>
+          </div>
+          <h3><a href="2026-09-13-welcome.html">Welcome — how this site works</a></h3>
+          <p class="excerpt">A short note on why this site exists and how notes get published — no build step, no database, just plain HTML files and a hand-edited list.</p>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+    </footer>
+  </div>
+
+  <script src="../theme.js" defer></script>
+</body>
+</html>

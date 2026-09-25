@@ -1,0 +1,134 @@
+<!--
+  academics/school.html — IB Diploma work: the Extended Essay and
+  the subjects list.
+  ================================================================
+  You asked for the coursework area specifically to be simple, plain
+  HTML/CSS, and heavily annotated so it works as a page to LEARN
+  from — so this file has more teaching comments than most of the
+  rest of the site.
+
+  The subjects list is written in the style of castel.dev/notes:
+  each subject gets a compact metadata line (level, school year) —
+  the equivalent of castel's "M1 · 19-20 · 6 ECTS" — above its
+  title and a one-line description of what it covers, using the
+  .entry-list component from style.css section 9B instead of a
+  literal HTML <table>.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>School — Coursework — The S Vector</title>
+  <meta name="description" content="IB coursework: subjects and the Extended Essay.">
+  <meta name="author" content="Sebastian Turner">
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-section="coursework">
+
+  <nav class="site-sidebar">
+    <div class="sidebar-inner">
+      <a class="sidebar-title" href="../index.html">The S Vector</a>
+      <div class="sidebar-links">
+        <a href="../eclecticon/index.html">Eclecticon</a>
+        <a href="../books/index.html">Books</a>
+        <a href="../photos/index.html">Photos</a>
+        <a href="../gap-year.html">Gap Year</a>
+        <a href="index.html" aria-current="page">Coursework</a>
+        <a href="../notes/index.html">Notes</a>
+        <a href="../about.html">About</a>
+        <a href="../giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container">
+      <p class="text-muted mt-0"><a href="index.html">&larr; Coursework</a></p>
+      <h1>School</h1>
+      <p class="text-muted">IB Diploma: subjects and the Extended Essay.</p>
+
+      <!--
+        ============================================================
+        A NOTE ON <section> vs <article> (used throughout this page):
+
+        <section> groups related content under one heading — think of
+        it as a labelled chapter. It has no special appearance on its
+        own; it exists purely to organise the page for both readers
+        and screen readers/search engines.
+
+        <article> is for a piece of content that could stand alone and
+        make sense if you pulled it out and put it somewhere else —
+        like one single subject, or the EE. Every <article> below has
+        its own <h3>, exactly like a mini self-contained page.
+
+        Neither tag changes how anything LOOKS by default — that's
+        entirely down to style.css. They only describe MEANING. This
+        is what "semantic HTML" means: choosing tags for what the
+        content IS, not for how you want it to look.
+        ============================================================
+      -->
+
+      <section>
+        <h2>Extended Essay</h2>
+        <article class="prose">
+          <!-- PLACEHOLDER — EE subject, title, and a short abstract -->
+          <h3>Working title of your Extended Essay</h3>
+          <p><strong>Subject:</strong> PLACEHOLDER (e.g. Physics, Computer Science)</p>
+          <p>Write a short abstract or summary of your EE research question and findings here.</p>
+        </article>
+      </section>
+
+      <section>
+        <h2>IB Subjects</h2>
+
+        <!-- PLACEHOLDER subjects — copy one <article class="entry">
+             per subject. The metadata line (level + school year) is
+             the castel-style equivalent of a course code/credit line —
+             edit it to match your actual IB level and year. -->
+        <div class="entry-list">
+
+          <article class="entry">
+            <div class="entry-meta">
+              <span class="accent">HL</span>
+              <span>PLACEHOLDER school year (e.g. Year 12, 2025–2026)</span>
+            </div>
+            <h3>Computer Science</h3>
+            <p>PLACEHOLDER — a one-line summary of what this subject covers this year.</p>
+          </article>
+
+          <article class="entry">
+            <div class="entry-meta">
+              <span class="accent">HL</span>
+              <span>PLACEHOLDER school year</span>
+            </div>
+            <h3>Physics</h3>
+            <p>PLACEHOLDER — a one-line summary of what this subject covers this year.</p>
+          </article>
+
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+    </footer>
+  </div>
+
+  <script src="../theme.js" defer></script>
+</body>
+</html>

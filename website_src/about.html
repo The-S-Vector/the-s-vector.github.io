@@ -1,0 +1,103 @@
+<!--
+  about.html — a bio + contact page, at the root alongside index.html
+  since it's a single standalone page (no subpages needed, so no
+  about/ folder — compare to notes/ or eclecticon/, which DO have
+  subpages and therefore get their own folder).
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — The S Vector</title>
+  <meta name="description" content="About Sebastian Turner and how to get in touch.">
+  <meta name="author" content="Sebastian Turner">
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-section="about">
+
+  <nav class="site-sidebar">
+    <div class="sidebar-inner">
+      <a class="sidebar-title" href="index.html">The S Vector</a>
+      <div class="sidebar-links">
+        <a href="eclecticon/index.html">Eclecticon</a>
+        <a href="books/index.html">Books</a>
+        <a href="photos/index.html">Photos</a>
+        <a href="gap-year.html">Gap Year</a>
+        <a href="academics/index.html">Coursework</a>
+        <a href="notes/index.html">Notes</a>
+        <a href="about.html" aria-current="page">About</a>
+        <a href="giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container">
+      <h1>About</h1>
+
+      <div class="prose">
+        <!-- PLACEHOLDER — write your actual bio: who you are, what
+             you study, what you're building, what this site is for. -->
+        <p>
+          I'm Sebastian — a student working across software, semiconductor
+          research, and photography. This site is where I collect all of it:
+          articles, photos, books, coursework, and the computer science
+          projects I'm building.
+        </p>
+
+        <h2>Contact</h2>
+        <!-- PLACEHOLDER — replace with your real contact details/links.
+             Keep this list short: one or two ways to actually reach you. -->
+        <ul>
+          <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+          <li>GitHub: <a href="https://github.com/the-s-vector">github.com/the-s-vector</a></li>
+        </ul>
+
+        <!--
+          Blinkies — the classic 88x31px personal-site badge GIFs.
+          You said you already have these saved, so this is just
+          empty slots to drop them into: put the actual image files
+          somewhere like about/blinkies/ (or right next to this file),
+          then fill in each src="" below. .blinkie (style.css section
+          12B) forces the correct 88x31 size and keeps pixel art crisp
+          instead of blurry — it doesn't matter what size the source
+          file actually is, the CSS will fit it into that box.
+
+          Copy one <img> per blinkie; delete any you don't need.
+        -->
+        <h2></h2>
+        <div class="blinkies">
+          <img class="blinkie" src="..\Blinkies\bestviewedon.gif" alt="PLACEHOLDER blinkie">
+          <!-- <img class="blinkie" src="..\Blinkies\earth_first.gif" alt="PLACEHOLDER blinkie"> -->
+          <img class="blinkie" src="..\Blinkies\firefox.gif" alt="PLACEHOLDER blinkie">
+          <!-- <img class="blinkie" src="..\Blinkies\radioactive.gif" alt="PLACEHOLDER blinkie"> -->
+          <img class="blinkie" src="..\Blinkies\removeSocials.gif" alt="PLACEHOLDER blinkie">
+          <!-- <img class="blinkie" src="..\Blinkies\science.gif" alt="PLACEHOLDER blinkie"> -->
+          <!-- <img class="blinkie" src="..\Blinkies\skyrim.gif" alt="PLACEHOLDER blinkie"> -->
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+    </footer>
+  </div>
+
+  <script src="theme.js" defer></script>
+</body>
+</html>

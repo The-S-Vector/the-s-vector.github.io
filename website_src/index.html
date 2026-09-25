@@ -1,0 +1,129 @@
+<!--
+  index.html — the homepage.
+  ================================================================
+  This file is the pattern every other page in the site follows.
+  Read the comments below top to bottom once, and you'll understand
+  every other page too — they're all built from the same four parts:
+
+    1. The <head> theme-init script + stylesheet link (see theme.js
+       and style.css for the full explanation of how these connect).
+    2. The <nav class="site-sidebar"> — site title, nav links, and
+       the theme toggle, fixed to the left edge of the window (see
+       style.css section 4 for how the layout math works, and
+       section 14 for how it collapses to a top bar on phones).
+    3. A <div class="page"> wrapping <main> (the only part that
+       actually differs page to page) and <footer>.
+
+  To start a brand new page one folder deep (like notes/, photos/,
+  eclecticon/, etc.), copy an existing page from that folder rather than
+  this one — every link in the sidebar needs an extra "../" prefix
+  when the page itself lives one folder down. Compare this file's
+  sidebar links (e.g. href="notes/index.html") with, say,
+  notes/index.html's sidebar (href="../notes/index.html") to see
+  the difference.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The S Vector — Sebastian Turner</title>
+  <meta name="description" content="Personal site of Sebastian Turner: notes, photography, books, computer science projects, and coursework.">
+  <meta name="author" content="Sebastian Turner">
+
+  <!--
+    Theme init — must run BEFORE style.css loads and before the page
+    paints, so the correct theme is already applied on first paint.
+    Full explanation of what this does and why it lives here: theme.js.
+  -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Analytics (GoatCounter — same account used across the whole site) -->
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+
+  <nav class="site-sidebar">
+    <div class="sidebar-inner">
+      <a class="sidebar-title" href="index.html">The S Vector</a>
+      <div class="sidebar-links">
+        <a href="eclecticon/index.html">Eclecticon</a>
+        <a href="books/index.html">Books</a>
+        <a href="photos/index.html">Photos</a>
+        <a href="gap-year.html">Gap Year</a>
+        <a href="academics/index.html">Coursework</a>
+        <a href="notes/index.html">Notes</a>
+        <a href="about.html">About</a>
+        <a href="giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container">
+
+      <h1>Hi, I'm Sebastian.</h1>
+      <p>
+        <!-- PLACEHOLDER — replace with a couple of sentences about yourself:
+             who you are, what you're currently focused on (school, GIGA,
+             chip design, etc.), and why this site exists. Two or three
+             sentences is plenty — this is the front door, not the whole book. -->
+        Things...
+      </p>
+
+      <div class="grid" style="margin-top: 2rem;">
+        <a class="grid-card" href="notes/index.html">
+          <h3>Notes →</h3>
+          <p>Digital Notepad.</p>
+        </a>
+        <a class="grid-card" href="photos/index.html">
+          <h3>Photos →</h3>
+          <p>Some of my photos.</p>
+        </a>
+        <a class="grid-card" href="books/index.html">
+          <h3>Books →</h3>
+          <p>My digital bookshelf.</p>
+        </a>
+        <a class="grid-card" href="eclecticon/index.html">
+          <h3>Eclecticon →</h3>
+          <p>An exploration.</p>
+        </a>
+        <a class="grid-card" href="academics/index.html">
+          <h3>Coursework →</h3>
+          <p>School (IB), personal projects, and university-track notes.</p>
+        </a>
+        <a class="grid-card" href="gap-year.html">
+          <h3>Gap Year →</h3>
+          <p>A gap year in New Zealand: travel plans, journal, places, and hikes.</p>
+        </a>
+        <a class="grid-card" href="about.html">
+          <h3>About →</h3>
+          <p>Who I am, and how to reach me.</p>
+        </a>
+        <a class="grid-card" href="giga/disclaimer.html">
+          <h3>Giga Project →</h3>
+          <p>An interactive booth game built for UNICEF–ITU's Giga initiative.</p>
+        </a>
+      </div>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+    </footer>
+  </div>
+
+  <script src="theme.js" defer></script>
+</body>
+</html>

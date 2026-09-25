@@ -1,0 +1,1144 @@
+/* ============================================================
+   style.css — shared stylesheet for the whole site
+   ------------------------------------------------------------
+   Every page links to this one file, so there is only ONE place
+   to change colors, spacing or fonts. No CSS framework is used —
+   everything below is plain CSS, organised into labelled sections
+   so it's easy to scan and learn from.
+
+   Sections in this file:
+     1. Theme variables (light + dark + the fixed tag palette)
+    1B. Per-section accent colors (Notes/Photos/Books/Eclecticon/
+        Coursework/Gap Year/About all look different from one another)
+     2. Reset & base element styles
+     3. Layout helpers (container, spacing)
+     4. Sidebar navigation (vertical, left side)
+     5. Theme toggle button
+     6. Footer
+     7. Typography for articles ("prose")
+     8. Buttons & links
+     9. Cards & grids (the homepage overview grid)
+    9B. Entry lists (castel.dev-style course/article lists)
+    9C. In-page tab bar (sticky anchor-link menu for long pages)
+    9D. Checklist (to-do-style list, e.g. Gap Year travel plans)
+    9E. Place groups (collapsible regions, e.g. Gap Year places been)
+    10. Tag pills (photos, notes, coursework)
+    11. Photo showcase (filter bar + photo cards)
+    12. Book cards (reading / to-be-read / read)
+    13. Small utility classes
+    14. Responsive tweaks
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. THEME VARIABLES
+   ------------------------------------------------------------
+   All colors live in CSS custom properties ("variables") so the
+   rest of the file never hardcodes a color. That's what makes
+   dark/light mode possible: we only ever redefine these variables,
+   nothing else needs to change.
+
+   Light mode is the default (defined on :root).
+   Dark mode is applied in two ways:
+     a) automatically, if the visitor's OS is set to dark AND they
+        have not chosen a preference on this site
+        (prefers-color-scheme media query)
+     b) manually, if the visitor clicked the theme toggle button.
+        That sets data-theme="dark" (or "light") on <html>, which
+        is saved in localStorage by theme.js and always wins.
+
+   --brand is deliberately NOT redefined in dark mode: #6f00bf is
+   the one fixed brand color, always the same purple regardless of
+   theme, used for solid-fill things (buttons, the active nav link)
+   where it sits on its own background rather than needing to read
+   as body text. --accent is a separate variable because a raw
+   #6f00bf as TEXT on pure black doesn't have quite enough contrast
+   to read comfortably — so in dark mode --accent is a lightened
+   version of the same purple, used for links and small text.
+   ------------------------------------------------------------ */
+
+:root {
+  --brand: #6f00bf; /* fixed brand purple — same in both themes */
+
+  --bg:          #faf9f6;   /* page background */
+  --bg-alt:      #f1efe8;   /* slightly darker panels (cards, code) */
+  --text:        #1f1e1c;   /* main text color */
+  --text-muted:  #6b6660;   /* secondary text: dates, captions */
+  --accent:      #6f00bf;   /* links & small accents — brand purple reads fine on light bg */
+  --accent-soft: #6f00bf1a; /* accent at low opacity, for backgrounds */
+  --border:      #e4e0d6;   /* hairline borders */
+  --code-text:   #5c0099;
+
+  /* ----------------------------------------------------------
+     Fixed 12-color tag palette. These never change between
+     light/dark mode — they're used as small colored pills to
+     label tags/categories (see section 10), so they need to stay
+     recognizable as "the same tag" no matter what theme you're in.
+     Legend (rough hue groups, pick whichever fits a tag's meaning —
+     there's no strict rule, it's just a fixed set to draw from so
+     tags aren't picked randomly each time):
+       --tag-1  #060628  deep navy
+       --tag-2  #0b1b41  navy
+       --tag-3  #143f64  blue
+       --tag-4  #18676e  teal
+       --tag-5  #27886a  teal-green
+       --tag-6  #3e9e58  green
+       --tag-7  #230628  deep plum
+       --tag-8  #34093b  plum
+       --tag-9  #3a1358  purple
+       --tag-10 #412374  purple
+       --tag-11 #473382  purple
+       --tag-12 #4d4697  blue-purple
+     ---------------------------------------------------------- */
+  --tag-1:  #060628;
+  --tag-2:  #0b1b41;
+  --tag-3:  #143f64;
+  --tag-4:  #18676e;
+  --tag-5:  #27886a;
+  --tag-6:  #3e9e58;
+  --tag-7:  #230628;
+  --tag-8:  #34093b;
+  --tag-9:  #3a1358;
+  --tag-10: #412374;
+  --tag-11: #473382;
+  --tag-12: #4d4697;
+}
+
+/* Dark mode from the OS setting, unless the visitor picked "light" manually.
+   --bg is literal #000000 — true AMOLED black, as requested: on an OLED
+   screen a fully-black pixel is switched off entirely (not just "very dark"),
+   which is both the truest possible dark theme and the most battery-efficient. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:          #000000;
+    --bg-alt:      #0a0a0d;   /* barely lifted off black, just enough to outline a panel */
+    --text:        #f1eef7;
+    --text-muted:  #948da3;
+    --accent:      #b478f0;   /* lightened brand purple — readable as text on pure black */
+    --accent-soft: #6f00bf33;
+    --border:      #1c1c22;
+    --code-text:   #c99bf5;
+  }
+}
+
+/* Dark mode chosen manually via the toggle button, regardless of OS setting */
+:root[data-theme="dark"] {
+  --bg:          #000000;
+  --bg-alt:      #0a0a0d;
+  --text:        #f1eef7;
+  --text-muted:  #948da3;
+  --accent:      #b478f0;
+  --accent-soft: #6f00bf33;
+  --border:      #1c1c22;
+  --code-text:   #c99bf5;
+}
+
+
+/* ------------------------------------------------------------
+   1B. PER-SECTION ACCENT COLORS
+   ------------------------------------------------------------
+   Each main section of the site (Notes, Photos, Books, Eclecticon,
+   Coursework, Gap Year, About) gets its own --accent,
+   pulled from the fixed palette in section 1, so every section
+   has a visibly different color scheme instead of one purple
+   everywhere. --brand stays fixed purple regardless — it's the
+   one constant "this is THIS SITE" color (sidebar title, the
+   theme-toggle button, the Giga Project call-to-action, and solid
+   .btn backgrounds), while --accent is the thematic color used
+   for links, the active sidebar item, and highlights WITHIN
+   whatever section you're currently on.
+
+   How a page opts in: give its <body> a data-section="..." attribute,
+   e.g. <body data-section="photos">. Pages with no data-section
+   (the homepage, the Giga disclaimer) just keep using the default
+   --accent defined in section 1 above.
+
+   Each section is defined twice, same as --accent itself: once
+   with the palette color as-is (good contrast on the light
+   background), and once — inside the dark-mode blocks — with a
+   hand-lightened version of the same hue, for the same reason
+   --accent itself is lightened in dark mode: the raw palette
+   colors are too dark to read as text on pure black.
+   ------------------------------------------------------------ */
+
+body[data-section="notes"]      { --accent: #473382; }
+body[data-section="photos"]     { --accent: #18676e; }
+body[data-section="books"]      { --accent: #3e9e58; }
+body[data-section="eclecticon"] { --accent: #143f64; }
+body[data-section="coursework"] { --accent: #0b1b41; }
+body[data-section="gapyear"]    { --accent: #27886a; }
+body[data-section="about"]      { --accent: #34093b; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body[data-section="notes"]      { --accent: #b28ee8; }
+  :root:not([data-theme="light"]) body[data-section="photos"]     { --accent: #4cc4ce; }
+  :root:not([data-theme="light"]) body[data-section="books"]      { --accent: #7fe0a0; }
+  :root:not([data-theme="light"]) body[data-section="eclecticon"] { --accent: #6fb3e0; }
+  :root:not([data-theme="light"]) body[data-section="coursework"] { --accent: #8098d8; }
+  :root:not([data-theme="light"]) body[data-section="gapyear"]    { --accent: #5cd1a8; }
+  :root:not([data-theme="light"]) body[data-section="about"]      { --accent: #c17fd6; }
+}
+
+:root[data-theme="dark"] body[data-section="notes"]      { --accent: #b28ee8; }
+:root[data-theme="dark"] body[data-section="photos"]     { --accent: #4cc4ce; }
+:root[data-theme="dark"] body[data-section="books"]      { --accent: #7fe0a0; }
+:root[data-theme="dark"] body[data-section="eclecticon"] { --accent: #6fb3e0; }
+:root[data-theme="dark"] body[data-section="coursework"] { --accent: #8098d8; }
+:root[data-theme="dark"] body[data-section="gapyear"]    { --accent: #5cd1a8; }
+:root[data-theme="dark"] body[data-section="about"]      { --accent: #c17fd6; }
+
+
+/* ------------------------------------------------------------
+   2. RESET & BASE STYLES
+   ------------------------------------------------------------ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  /* Smooth scroll for in-page anchor links (e.g. table of contents) */
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+
+  /* Font stack = an ordered wishlist, not one font: the browser tries
+     each name left to right and uses the first one actually installed
+     on the visitor's device. Cambria (a serif shipped with Windows/
+     Office) is the first choice; Helvetica (common on Mac) is the
+     fallback if Cambria isn't there; Times New Roman (installed on
+     nearly every device, Windows and Mac both) after that; `serif` at
+     the very end is a generic keyword, not a real font name — it just
+     tells the browser "pick whatever serif font it has" if none of
+     the three named fonts exist at all, so text is never left totally
+     unstyled. Headings (h1/h2/h3/h4 below) don't set their own
+     font-family, so they inherit this same stack automatically. */
+  font-family: Cambria, Helvetica, "Times New Roman", serif;
+  font-size: 1.05rem;
+  line-height: 1.65;
+
+  /* This is one of the only two animations on the whole site, and it's
+     cheap. `transition` tells the browser: "when background-color or
+     color changes on this element, don't snap to the new value instantly —
+     smoothly interpolate between old and new over 0.15s (150ms)."
+     `ease` is the speed curve: quick start, slower finish, feels
+     natural instead of robotic (the alternative would be `linear`).
+     It only runs for that 150ms window right after theme.js flips
+     data-theme on <html> (see theme.js) — the rest of the time the
+     browser does nothing here at all. No loop, no JS, negligible cost. */
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+h1, h2, h3, h4 {
+  line-height: 1.25;
+  font-weight: 700;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin: 0 0 0.4em; }
+h2 { font-size: 1.5rem; margin: 1.6em 0 0.5em; }
+h3 { font-size: 1.15rem; margin: 1.4em 0 0.4em; }
+
+p { margin: 0 0 1em; }
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover { text-decoration-thickness: 2px; }
+
+img { max-width: 100%; display: block; border-radius: 6px; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2.5em 0;
+}
+
+code, pre {
+  font-family: ui-monospace, Consolas, "Courier New", monospace;
+  font-size: 0.92em;
+}
+
+code {
+  background: var(--bg-alt);
+  color: var(--code-text);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+pre {
+  background: var(--bg-alt);
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: var(--text);
+}
+
+blockquote {
+  margin: 1.2em 0;
+  padding: 0.2em 0 0.2em 1em;
+  border-left: 3px solid var(--accent);
+  color: var(--text-muted);
+}
+
+/* Native disclosure widget, used for photo camera-settings and any
+   other "click to reveal" content. No JS needed for these at all —
+   <details>/<summary> is built into HTML itself. */
+details {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5em 0.8em;
+}
+
+details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+details[open] summary {
+  margin-bottom: 0.5em;
+}
+
+dl {
+  margin: 0;
+}
+
+dl.meta-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25em 0.9em;
+  font-size: 0.85rem;
+}
+
+dl.meta-list dt {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+dl.meta-list dd {
+  margin: 0;
+}
+
+/* Keeps a sticky .page-tabs bar (section 11b) from covering the
+   heading when a visitor jumps straight to a section via its
+   in-page menu link. */
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
+
+/* ------------------------------------------------------------
+   3. LAYOUT
+   ------------------------------------------------------------ */
+
+.container {
+  /* This is THE line that controls text width across the whole site —
+     .container wraps <main> on every page. .site-footer (section 6,
+     below) has a matching max-width so the footer lines up with the
+     content above it — if you change one, change the other to match. */
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 0;
+}
+
+main {
+  padding-bottom: 4rem;
+}
+
+
+/* ------------------------------------------------------------
+   4. SIDEBAR NAVIGATION
+   ------------------------------------------------------------
+   A vertical nav fixed to the left edge of the window. Everything
+   else on the page (main content + footer) lives inside a sibling
+   <div class="page">, which gets a left margin exactly as wide as
+   the sidebar so it never sits underneath it.
+
+   On narrow screens (see section 14, Responsive) the sidebar drops
+   its fixed positioning and becomes an ordinary horizontal bar at
+   the top instead — plain CSS handles that switch, no JS involved.
+   ------------------------------------------------------------ */
+
+.site-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 220px;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.75rem 1.5rem;
+}
+
+.sidebar-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 2.25rem;
+}
+
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.95rem;
+  /* Pushes the theme toggle button (the next sibling) all the way
+     to the bottom of the sidebar, however tall the window is. */
+  margin-bottom: auto;
+}
+
+.sidebar-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.sidebar-links a:hover {
+  color: var(--text);
+}
+
+.sidebar-links a[aria-current="page"] {
+  /* --accent, not --brand: the highlighted nav item picks up
+     whatever section color is active on the current page (see
+     section 1B), so the sidebar itself hints at "where you are". */
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.sidebar-links a.nav-cta {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+/* The div wrapping every page's <main> + <footer>. Its only job is
+   to reserve space so content starts to the right of the sidebar. */
+.page {
+  margin-left: 220px;
+}
+
+
+/* ------------------------------------------------------------
+   5. THEME TOGGLE BUTTON
+   ------------------------------------------------------------ */
+
+.theme-toggle {
+  font: inherit;
+  font-size: 0.85rem;
+  background: var(--bg-alt);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35em 0.9em;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  align-self: flex-start;
+}
+
+.theme-toggle:hover {
+  border-color: var(--brand);
+}
+
+
+/* ------------------------------------------------------------
+   6. FOOTER
+   ------------------------------------------------------------ */
+
+.site-footer {
+  max-width: 860px; /* keep this equal to .container's max-width above (section 3) */
+  margin: 3rem 0 0;
+  padding: 1.5rem 1.25rem 3rem;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+
+/* ------------------------------------------------------------
+   7. ARTICLE / "PROSE" TYPOGRAPHY
+   ------------------------------------------------------------
+   Applied to the wrapper around long-form text: notes/articles,
+   book reviews, coursework write-ups, etc.
+   ------------------------------------------------------------ */
+
+.prose ul, .prose ol {
+  padding-left: 1.3em;
+}
+
+.prose li {
+  margin-bottom: 0.4em;
+}
+
+.post-meta {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin-bottom: 2rem;
+}
+
+/* Footnotes, castel.dev-style: a small superscript number in the
+   text linking down to a numbered list at the bottom of the article. */
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.footnotes ol {
+  padding-left: 1.2em;
+}
+
+sup a {
+  text-decoration: none;
+}
+
+
+/* ------------------------------------------------------------
+   8. BUTTONS & LINKS
+   ------------------------------------------------------------ */
+
+.btn {
+  display: inline-block;
+  padding: 0.6em 1.3em;
+  border-radius: 8px;
+  background: var(--brand);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn-secondary {
+  background: none;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--brand);
+  opacity: 1;
+}
+
+
+/* ------------------------------------------------------------
+   9. CARDS & GRIDS — used by the notes list, and the CS /
+      coursework landing pages that link out to subpages
+   ------------------------------------------------------------ */
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  padding: 1.2rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.card:last-child {
+  border-bottom: none;
+}
+
+.card h3 {
+  margin: 0 0 0.3em;
+}
+
+.card h3 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.card h3 a:hover {
+  color: var(--accent);
+}
+
+.card p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Grid of link-cards, e.g. the three CS subpages, or the three
+   coursework subpages (school / personal projects / uni notes) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.grid-card {
+  display: block;
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.grid-card:hover {
+  border-color: var(--brand);
+}
+
+.grid-card h3 {
+  margin: 0 0 0.3em;
+  color: var(--text);
+}
+
+.grid-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+
+/* ------------------------------------------------------------
+   9B. ENTRY LISTS
+   ------------------------------------------------------------
+   A castel.dev-notes-style vertical list: each item is a title,
+   a compact all-caps metadata line, and a short description —
+   used for the CS landing page, the Coursework landing page,
+   the IB subjects list, and (via the .article-list modifier
+   below) the Notes index.
+   ------------------------------------------------------------ */
+
+.entry-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.entry {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.entry:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.entry-meta {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  display: flex;
+  gap: 0.6em;
+  flex-wrap: wrap;
+  margin-bottom: 0.4em;
+}
+
+.entry-meta .accent {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.entry h3 {
+  margin: 0 0 0.3em;
+}
+
+.entry h3 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.entry h3 a:hover {
+  color: var(--accent);
+}
+
+.entry p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.entry-links {
+  margin-top: 0.6em;
+  display: flex;
+  gap: 1.2em;
+  font-size: 0.85rem;
+}
+
+/* Modifier for the Notes index: bigger title, and the description
+   reads as a normal-weight excerpt rather than muted metadata —
+   closer to a Substack-style article feed than a compact course list. */
+.article-list .entry {
+  padding: 2rem 0;
+}
+
+.article-list .entry h3 {
+  font-size: 1.4rem;
+}
+
+.article-list .entry .excerpt {
+  color: var(--text);
+  font-size: 1rem;
+  margin-top: 0.4em;
+}
+
+/* A plain metadata row for simple lists (hikes, places visited) —
+   identical shape to .book-row (section 12) but under a name that
+   doesn't imply "books" when reused elsewhere. */
+.list-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.list-row:last-child {
+  border-bottom: none;
+}
+
+.list-row .list-row-meta {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+
+/* ------------------------------------------------------------
+   9C. IN-PAGE TAB BAR
+   ------------------------------------------------------------
+   A small horizontal menu of anchor links at the top of a long
+   single page (used on the Personal Projects and Gap Year pages
+   instead of a grid of link-cards). Every link just points at an
+   id="..." further down the SAME page — plain HTML anchor links,
+   no JavaScript. `position: sticky` keeps it visible at the top
+   of the viewport as you scroll, so it stays usable throughout
+   a long page rather than only right at the very top.
+   ------------------------------------------------------------ */
+
+.page-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: var(--bg);
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-tabs a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.4em 0.9em;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.page-tabs a:hover {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+
+/* ------------------------------------------------------------
+   9D. CHECKLIST
+   ------------------------------------------------------------
+   A to-do-style list (used for Travel Plans on the Gap Year page):
+   real <input type="checkbox"> elements, marked disabled so clicking
+   one on the live page doesn't LOOK like it saved anything (it
+   can't — there's no JS or database behind it). To mark something
+   done, add the word `checked` to that item's <input> tag directly
+   in the HTML; that alone is enough to both tick the box AND
+   (via the :has() selector below) strike through and mute its text —
+   no separate class needed, no JS.
+
+   accent-color is a plain CSS property that recolors a native
+   checkbox/radio button to match a given color, instead of hiding it
+   and building a fake one out of <div>s — it automatically picks up
+   var(--accent), so the checkboxes are teal on the Gap Year page,
+   purple on Notes, etc., same as every other themed accent on the site.
+
+   :has() is a relatively modern CSS selector: `li:has(input:checked)`
+   means "any <li> that CONTAINS a checked checkbox anywhere inside
+   it" — it lets a parent element's style react to something about
+   its child, which plain CSS couldn't do before this existed.
+   ------------------------------------------------------------ */
+
+.checklist {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.checklist label {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+}
+
+.checklist input[type="checkbox"] {
+  width: 1.15em;
+  height: 1.15em;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+.checklist li:has(input:checked) label {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+
+/* ------------------------------------------------------------
+   9E. PLACE GROUPS
+   ------------------------------------------------------------
+   Used for Places I've Been on the Gap Year page: one collapsed
+   <details> per region/city, so specific named places (a restaurant,
+   a climbing gym, a viewpoint) can be listed inside without the page
+   turning into one giant flat list — only region names show until a
+   visitor (or you) expands one. Reuses the generic `details` /
+   `summary` base styling from section 2, just with a bigger, less
+   muted summary than the small camera-settings one on the photos
+   page, since here the summary IS the heading for that group. Each
+   place inside is one .list-row (section 9B), same as the book log
+   and the plain (non-grouped) rows elsewhere.
+   ------------------------------------------------------------ */
+
+.place-group-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.place-group summary {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.place-group summary .count {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.place-group > div {
+  margin-top: 0.6em;
+}
+
+
+/* ------------------------------------------------------------
+   10. TAG PILLS
+   ------------------------------------------------------------
+   Small rounded labels used on notes, photos, and coursework
+   entries. `.tag` sets the shared shape/spacing; the twelve
+   `.tag-c1`..`.tag-c12` modifier classes each set one background
+   color from the fixed palette in section 1. Mix and match: e.g.
+   <span class="tag tag-c4">Astro</span>
+   ------------------------------------------------------------ */
+
+.tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #f5f3fa;
+  padding: 0.2em 0.7em;
+  border-radius: 999px;
+  margin: 0 0.35em 0.35em 0;
+}
+
+.tag-c1  { background: var(--tag-1); }
+.tag-c2  { background: var(--tag-2); }
+.tag-c3  { background: var(--tag-3); }
+.tag-c4  { background: var(--tag-4); }
+.tag-c5  { background: var(--tag-5); }
+.tag-c6  { background: var(--tag-6); }
+.tag-c7  { background: var(--tag-7); }
+.tag-c8  { background: var(--tag-8); }
+.tag-c9  { background: var(--tag-9); }
+.tag-c10 { background: var(--tag-10); }
+.tag-c11 { background: var(--tag-11); }
+.tag-c12 { background: var(--tag-12); }
+
+
+/* ------------------------------------------------------------
+   11. PHOTO SHOWCASE
+   ------------------------------------------------------------ */
+
+/* The row of "All / Astro / Landscape / ..." buttons. filter.js
+   (in photos/) adds/removes .active and hides non-matching cards —
+   see that file for the fully-commented JS. */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.filter-btn {
+  font: inherit;
+  font-size: 0.85rem;
+  background: none;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35em 1em;
+  cursor: pointer;
+}
+
+.filter-btn:hover {
+  color: var(--text);
+  border-color: var(--brand);
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.photo-card {
+  margin: 0;
+}
+
+.photo-card img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  width: 100%;
+}
+
+.photo-card figcaption {
+  margin-top: 0.5em;
+}
+
+.photo-title {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.3em;
+}
+
+/* Not scoped to .photo-card — reused as-is for the hike details on
+   gap-year.html, which is the same "click to reveal specifics"
+   pattern outside the photo gallery. */
+details.photo-meta {
+  margin-top: 0.6em;
+}
+
+
+/* ------------------------------------------------------------
+   12. BOOK CARDS
+   ------------------------------------------------------------
+   One .book-card per book, reused across the Reading / To Be Read
+   / Read sections on books/index.html — some fields (rating,
+   review, finished date) are simply left out on books you haven't
+   finished yet.
+   ------------------------------------------------------------ */
+
+.book-card {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.book-card:last-child {
+  border-bottom: none;
+}
+
+.book-cover {
+  width: 90px;
+  flex-shrink: 0;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+/* "Currently reading" — bigger, featured cards at the top of the
+   books page, since that's meant to stand out above the plain list
+   rows used for Read/To Be Read. A grid rather than a single card
+   because there can be more than one book in progress at once. */
+.now-reading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0 3rem;
+}
+
+.now-reading-card {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.3rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+/* Overrides the plain .book-cover width above, just inside a
+   featured card — bigger cover to match the "big" treatment. */
+.now-reading-card .book-cover {
+  width: 120px;
+}
+
+.now-reading-card h3 {
+  font-size: 1.3rem;
+}
+
+.book-info h3 {
+  margin: 0 0 0.3em;
+}
+
+.rating {
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin: 0.6em 0 0;
+  font-size: 1.05rem;
+}
+
+.review {
+  margin-top: 0.6em;
+  color: var(--text);
+}
+
+
+/* ------------------------------------------------------------
+   12B. BLINKIES
+   ------------------------------------------------------------
+   The classic personal-website badge GIFs — always exactly
+   88x31 pixels, usually collected in a row at the page bottom.
+   Two overrides from the site's normal `img` rule (section 2)
+   are needed here: border-radius reset to 0 (rounded corners look
+   wrong on a small square badge) and image-rendering: pixelated,
+   which stops the browser from blurring small/pixel-art images
+   when it scales them — keeps blinkies crisp instead of mushy.
+   ------------------------------------------------------------ */
+
+.blinkies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.blinkie {
+  /* Scaled 2x from the traditional 88x31 blinkie size. Keep width and
+     height a whole-number MULTIPLE of 88x31 (2x = 176x62, 3x = 264x93,
+     etc.) rather than an arbitrary size — image-rendering: pixelated
+     below keeps pixel art crisp at clean multiples, but can look
+     uneven/blurry at a size that doesn't divide evenly (e.g. 1.5x). */
+  width: 176px;
+  height: 62px;
+  object-fit: contain;
+  border-radius: 0;
+  image-rendering: pixelated;
+}
+
+
+/* ------------------------------------------------------------
+   13. SMALL UTILITIES
+   ------------------------------------------------------------ */
+
+.text-muted { color: var(--text-muted); }
+.mt-0 { margin-top: 0; }
+
+/* A callout box, used e.g. on the GIGA disclaimer page */
+.callout {
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--brand);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+}
+
+
+/* ------------------------------------------------------------
+   14. RESPONSIVE TWEAKS
+   ------------------------------------------------------------
+   Below 780px there usually isn't room for a permanent 220px-wide
+   sidebar next to readable text, so it stops being `position: fixed`
+   and becomes a normal top bar instead — the links switch from a
+   vertical column to a wrapping row. `.page` no longer needs its
+   left margin once the sidebar isn't fixed over the content.
+   ------------------------------------------------------------ */
+
+@media (max-width: 780px) {
+  .site-sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1rem 1.25rem;
+  }
+
+  .sidebar-title {
+    margin-bottom: 0;
+    margin-right: auto;
+  }
+
+  .sidebar-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0;
+  }
+
+  .theme-toggle {
+    margin-top: 0;
+  }
+
+  .page {
+    margin-left: 0;
+  }
+
+  .container {
+    padding-top: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-card {
+    flex-direction: column;
+  }
+  .book-cover {
+    width: 120px;
+  }
+}

@@ -1,0 +1,195 @@
+<!--
+  photos/index.html — photography showcase, with tags and a filter bar.
+  ================================================================
+  To add a photo: copy one <figure class="photo-card"> block below,
+  change the src/srcset (see "RESPONSIVE IMAGES" below), the caption,
+  the tags (both the visible <span class="tag ..."> pills AND the
+  invisible data-tags="..." attribute that filter.js actually reads),
+  and the camera-settings details.
+
+  RESPONSIVE IMAGES — why each <img> below has srcset/sizes/loading
+  instead of a single src: a full-resolution photo can easily be
+  several megabytes, and this page might show a dozen of them. Without
+  help, the browser would download every single one at full size the
+  moment the page loads — slow, and mostly wasted, since most of them
+  are only ever displayed at a few hundred pixels wide inside the
+  grid. Three attributes fix that:
+
+    srcset="photo-400.jpg 400w, photo-800.jpg 800w, ..." lists several
+    exports of the SAME photo at different widths (the number + "w" is
+    that file's actual pixel width — not a size on screen, an
+    intrinsic size). You provide the options; you never pick one
+    yourself in the HTML.
+
+    sizes="(max-width: 780px) 90vw, 320px" tells the browser how wide
+    the image will actually be DISPLAYED at different viewport widths
+    (780px matches the breakpoint in style.css section 14, where the
+    sidebar collapses and the grid effectively goes full-width) —
+    "below 780px it'll render at roughly 90% of the viewport width,
+    otherwise about 320px." Given that plus srcset, the browser works
+    out which single file from srcset is the smallest one still big
+    enough to look sharp, and downloads ONLY that one.
+
+    loading="lazy" tells the browser not to download the image at all
+    until it's about to scroll into view — so a photo near the bottom
+    of a long gallery doesn't cost anything until you actually scroll
+    to it.
+
+    src="photo-800.jpg" is still required as a plain fallback for the
+    very rare browser that ignores srcset entirely — pick your
+    "safe middle" size for it (800w here).
+
+  You need to actually export each photo at those four widths yourself
+  (any image editor, or a free batch-resize tool, works — this site
+  has no build step to generate them automatically). Naming them
+  consistently, e.g. milky-way-400.jpg / milky-way-800.jpg /
+  milky-way-1600.jpg / milky-way-2400.jpg, keeps the <img> tag
+  readable.
+
+  HOW FILTERING WORKS (see filter.js for the full line-by-line
+  explanation): each photo card has a data-tags attribute, e.g.
+  data-tags="astro,night". Each filter button has a data-filter
+  attribute, e.g. data-filter="astro". Clicking a button hides every
+  .photo-card whose data-tags does NOT contain that filter's value.
+  "All" (data-filter="all") is a special case that always matches.
+
+  To add a brand new category (not just a new tag on existing
+  photos), add a new button to .filter-bar with a new data-filter
+  value, and give at least one photo that same value in its
+  data-tags. No other file needs to change.
+
+  Put the actual image files in this same photos/ folder (or
+  subfolders like photos/astro/ if you want to group them — just
+  adjust the src path to match, e.g. src="astro/milky-way.jpg").
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photos — The S Vector</title>
+  <meta name="description" content="A photography showcase by Sebastian Turner.">
+  <meta name="author" content="Sebastian Turner">
+
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="../style.css">
+
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+</head>
+<body data-section="photos">
+
+  <nav class="site-sidebar">
+    <div class="sidebar-inner">
+      <a class="sidebar-title" href="../index.html">The S Vector</a>
+      <div class="sidebar-links">
+        <a href="../eclecticon/index.html">Eclecticon</a>
+        <a href="../books/index.html">Books</a>
+        <a href="index.html" aria-current="page">Photos</a>
+        <a href="../gap-year.html">Gap Year</a>
+        <a href="../academics/index.html">Coursework</a>
+        <a href="../notes/index.html">Notes</a>
+        <a href="../about.html">About</a>
+        <a href="../giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <div class="page">
+    <main class="container">
+      <h1>Photos</h1>
+      <p class="text-muted">A mix of astrophotography, landscapes, and hikes.</p>
+
+      <!-- Filter bar — data-filter="all" must exist and match every
+           photo; every other button's data-filter should match at
+           least one photo's data-tags below. -->
+      <div class="filter-bar" role="group" aria-label="Filter photos by tag">
+        <button class="filter-btn active" type="button" data-filter="all">All</button>
+        <button class="filter-btn" type="button" data-filter="astro">Astro</button>
+        <button class="filter-btn" type="button" data-filter="landscape">Landscape</button>
+        <button class="filter-btn" type="button" data-filter="hiking">Hiking</button>
+      </div>
+
+      <!--
+        PLACEHOLDER GALLERY — replace each srcset/src filename with
+        your own exported image widths (see "RESPONSIVE IMAGES" up top
+        for why there are four per photo) and write real captions/
+        settings. Delete or duplicate <figure> blocks as needed.
+      -->
+      <div class="photo-grid">
+
+        <figure class="photo-card" data-tags="astro">
+          <img
+            src="milky-way-800.jpg"
+            srcset="milky-way-400.jpg 400w, milky-way-800.jpg 800w, milky-way-1600.jpg 1600w, milky-way-2400.jpg 2400w"
+            sizes="(max-width: 780px) 90vw, 320px"
+            loading="lazy"
+            alt="PLACEHOLDER: describe the photo for accessibility"
+          >
+          <figcaption>
+            <span class="photo-title">PLACEHOLDER title / location</span>
+            <div>
+              <span class="tag tag-c3">Astro</span>
+            </div>
+            <!-- <details>/<summary> is a native HTML disclosure widget —
+                 click to expand, no JS required at all. This is the
+                 "footnote" for camera settings you asked for. -->
+            <details class="photo-meta">
+              <summary>Camera settings</summary>
+              <dl class="meta-list">
+                <dt>Camera</dt><dd>PLACEHOLDER</dd>
+                <dt>Lens</dt><dd>PLACEHOLDER</dd>
+                <dt>Settings</dt><dd>PLACEHOLDER (e.g. f/2.8 &middot; 15s &middot; ISO 3200)</dd>
+                <dt>Location</dt><dd>PLACEHOLDER</dd>
+              </dl>
+            </details>
+          </figcaption>
+        </figure>
+
+        <figure class="photo-card" data-tags="landscape,hiking">
+          <img
+            src="ridge-line-800.jpg"
+            srcset="ridge-line-400.jpg 400w, ridge-line-800.jpg 800w, ridge-line-1600.jpg 1600w, ridge-line-2400.jpg 2400w"
+            sizes="(max-width: 780px) 90vw, 320px"
+            loading="lazy"
+            alt="PLACEHOLDER: describe the photo for accessibility"
+          >
+          <figcaption>
+            <span class="photo-title">PLACEHOLDER title / location</span>
+            <div>
+              <span class="tag tag-c6">Landscape</span>
+              <span class="tag tag-c5">Hiking</span>
+            </div>
+            <details class="photo-meta">
+              <summary>Camera settings</summary>
+              <dl class="meta-list">
+                <dt>Camera</dt><dd>PLACEHOLDER</dd>
+                <dt>Lens</dt><dd>PLACEHOLDER</dd>
+                <dt>Settings</dt><dd>PLACEHOLDER (e.g. f/8 &middot; 1/250s &middot; ISO 100)</dd>
+                <dt>Location</dt><dd>PLACEHOLDER</dd>
+              </dl>
+            </details>
+          </figcaption>
+        </figure>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+    </footer>
+  </div>
+
+  <script src="../theme.js" defer></script>
+  <script src="filter.js" defer></script>
+</body>
+</html>

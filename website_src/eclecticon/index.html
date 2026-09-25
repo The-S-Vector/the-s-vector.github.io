@@ -1,0 +1,449 @@
+<!--
+  ================================================================
+  eclecticon/index.html — Eclecticon landing page
+  ================================================================
+  This copy of the file is annotated MUCH more heavily than the rest
+  of the site, on purpose: you said you only know real HTML/CSS
+  basics and want to actually understand everything here, not just
+  copy-paste it. So every single tag below has a comment next to it
+  explaining what it is and why it's there — treat this file as a
+  lesson, not just a page.
+
+  A few ground rules about HTML comments, since you'll see a lot of
+  them below:
+ <!-""- "without "" like this -- >  is a comment. Anything between
+    is completely ignored by the browser — it's not shown on the
+    page at all. It exists purely for humans reading the source code.
+    Comments can't be nested (you can't put a comment inside a
+    comment), and they can appear almost anywhere in the file.
+
+  This page links to three other pages that already exist —
+  programming.html, chip-research.html, building-a-chip.html — plus
+  electrical-stuff.html, which you just added yourself. All four
+  live in this same eclecticon/ folder.
+-->
+
+<!--
+  Every HTML file starts with this exact line. It's not a tag, it's
+  a "doctype declaration" — a one-time instruction at the very top
+  telling the browser "read this file as modern HTML" (as opposed to
+  some old, quirky version of HTML from the 1990s). You never need
+  more than this one word; you just always include it, once, first.
+-->
+<!doctype html>
+
+<!--
+  <html> is the root element — literally the outermost container
+  that holds the ENTIRE page. Every other tag in this file lives
+  inside it. It always has exactly one closing tag, </html>, at the
+  very bottom of the file.
+
+  lang="en" tells browsers and screen readers "this page's text is
+  in English." That's not decorative — screen readers use it to
+  pick the right pronunciation/voice, and browsers use it for things
+  like offering translation. Always set it to match your content.
+-->
+<html lang="en">
+
+<!--
+  <head> holds information ABOUT the page — metadata — rather than
+  content a visitor actually reads on the page itself. Nothing
+  inside <head> is directly visible in the page body; it configures
+  the tab title, search-engine description, which stylesheet to
+  use, and so on.
+-->
+<head>
+
+  <!--
+    <meta charset="utf-8"> tells the browser which character
+    encoding this file uses, so text (including special characters
+    like the "—" em-dashes used all over this site) displays
+    correctly instead of turning into garbled symbols. utf-8 is the
+    standard choice for basically every modern website — you'll
+    write this exact line at the top of every page's <head>.
+  -->
+  <meta charset="utf-8">
+
+  <!--
+    This <meta> tag controls how the page behaves on phones/tablets.
+    Without it, mobile browsers assume you built a wide desktop page
+    and shrink the whole thing down to fit, making text tiny.
+    width=device-width says "match the page's width to the actual
+    screen width." initial-scale=1 says "start at normal zoom, don't
+    zoom in or out automatically." You want this exact line on every
+    page of any site you build.
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--
+    <title> sets the text shown in the browser tab and in bookmarks/
+    search results. It's the one piece of <head> content that's
+    visible, just not IN the page — it's in the browser's UI around
+    the page.
+  -->
+  <title>Eclecticon — The S Vector</title>
+
+  <!--
+    <meta name="description" content="..."> is a short summary aimed
+    at search engines (Google, etc. often show this text under your
+    page's title in search results). It doesn't affect how the page
+    looks at all — purely for search/sharing purposes.
+  -->
+  <meta name="description" content="An exploration of different things I'm curious about — programming, electronics, chip design, and more.">
+
+  <!-- Same idea: metadata only, records who wrote the page. Doesn't render anywhere. -->
+  <meta name="author" content="Sebastian Turner">
+
+  <!--
+    This is a <script> tag containing actual JavaScript code, written
+    directly in the HTML file (as opposed to linking to a separate
+    .js file — see the bottom of </body> for that other style).
+
+    Why it's here, at the very top of <head>, before anything else:
+    it needs to run and finish BEFORE the browser paints any pixels
+    of this page, so that dark/light mode is already correct on the
+    very first frame — otherwise you'd see a flash of the wrong
+    theme for a split second every time you loaded a page.
+
+    What it actually does, line by line:
+      (function () { ... })()   — this whole shape defines a function
+        and immediately calls it. Wrapping code this way keeps any
+        variables it creates "private" to this block, so they can't
+        accidentally clash with variables from other scripts on the
+        page. You don't need to fully understand this pattern yet;
+        just know it means "run this code once, immediately."
+      var saved = localStorage.getItem("theme");
+        — localStorage is a small storage box the browser keeps for
+        this website, that survives closing the tab. This line reads
+        back whatever was saved under the key "theme" last time you
+        clicked the toggle button (see theme.js for where it gets
+        saved). If nothing was ever saved, `saved` becomes `null`.
+      if (saved === "light" || saved === "dark") { ... }
+        — only do something if a real choice was saved.
+      document.documentElement.setAttribute("data-theme", saved);
+        — `document.documentElement` means the <html> tag itself.
+        `.setAttribute("data-theme", saved)` writes data-theme="dark"
+        (or "light") onto it. style.css then reacts to that exact
+        attribute to swap every color on the page — see style.css,
+        section 1, for the CSS side of this mechanism.
+
+    Full, much longer explanation of the whole theme system (with
+    every JS concept spelled out) lives in theme.js at the root of
+    the site — read that file next if you want the deep dive.
+  -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem("theme");
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    })();
+  </script>
+
+  <!--
+    <link rel="stylesheet" href="..."> connects this HTML file to an
+    external CSS file — all the colors, fonts, spacing, and layout
+    rules for the WHOLE site live in that one file, style.css, so
+    every page can share them instead of repeating CSS everywhere.
+
+    href="../style.css" — the "../" means "go up one folder first."
+    This file is inside eclecticon/, and style.css lives one level up,
+    at the site's root — so from eclecticon/index.html, the path to it is
+    "../style.css". Compare this to the root-level pages like
+    index.html or about.html, which just write "style.css" (no
+    "../") because they're already sitting right next to it.
+  -->
+  <link rel="stylesheet" href="../style.css">
+
+  <!--
+    This is GoatCounter — a simple, privacy-friendly page-view
+    counter (analytics). data-goatcounter tells its script which
+    account to log this page-view against. async means "download
+    this script in the background and don't make the visitor wait
+    for it before the rest of the page loads" — good practice for
+    any third-party script that isn't essential to the page working.
+    This exact two-line snippet is copy-pasted, unchanged, onto every
+    page of this site.
+  -->
+  <script data-goatcounter="https://the-s-vector.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+
+<!-- This closes the <head> section — everything above was metadata, nothing visible yet. -->
+</head>
+
+<!--
+  <body> is where the ACTUAL visible page starts. Everything a
+  visitor sees or interacts with lives inside this tag.
+
+  data-section="eclecticon" is a custom attribute (the "data-" prefix means
+  "this is a custom piece of data I made up, not a built-in HTML
+  attribute"). style.css section 1B reads this exact attribute to
+  decide this page's accent color (--accent) — for "eclecticon" it's
+  set to a blue. Every themed page on the site has one of these,
+  matching its section: "notes", "photos", "books", "eclecticon",
+  "coursework", "gapyear", or "about". Pages without a theme (the homepage, the
+  Giga disclaimer) simply don't have this attribute at all, and fall
+  back to the site's default purple.
+-->
+<body data-section="eclecticon">
+
+  <!--
+    ==============================================================
+    THE SIDEBAR — identical block of HTML repeated on every page of
+    the site (only the href paths and which link has aria-current
+    change). It's a <nav> element because its whole purpose IS
+    navigation — that's the correct semantic tag for "a set of links
+    to get around the site," as opposed to a plain <div>, which
+    carries no meaning at all.
+    ==============================================================
+  -->
+  <nav class="site-sidebar">
+    <!--
+      class="site-sidebar" doesn't do anything by itself — a class
+      is just a label you invent, so CSS (or JavaScript) can target
+      this specific element later. Go look at style.css and search
+      for ".site-sidebar" (section 4) to see the actual rules that
+      make this element fixed to the left edge of the screen,
+      220px wide, etc. The HTML only says WHAT the element IS; the
+      CSS says HOW it looks.
+    -->
+    <div class="sidebar-inner">
+      <!--
+        This inner <div> exists purely for layout: style.css turns
+        it into a vertical flexbox (a column), so the title, the
+        links, and the toggle button stack neatly and the toggle
+        button can be pushed to the very bottom (see style.css,
+        ".sidebar-links { margin-bottom: auto; }").
+      -->
+
+      <!--
+        <a> is the anchor tag — the ONE tag that creates a clickable
+        link. href="../index.html" is the destination: from eclecticon/,
+        go up one folder ("../") to reach index.html at the site root.
+        class="sidebar-title" just lets style.css style this
+        specific link differently from the others below (bigger,
+        bolder — see style.css, ".sidebar-title").
+      -->
+      <a class="sidebar-title" href="../index.html">The S Vector</a>
+
+      <!-- A plain wrapper <div> around the nav links, again purely for CSS layout (spacing them out as a column). -->
+      <div class="sidebar-links">
+        <a href="index.html" aria-current="page">Eclecticon</a>
+        <a href="../books/index.html">Books</a>
+        <a href="../photos/index.html">Photos</a>
+        <a href="../gap-year.html">Gap Year</a>
+        <a href="../academics/index.html">Coursework</a>
+        <a href="../notes/index.html">Notes</a>
+        <a href="../about.html">About</a>
+        <a href="../giga/disclaimer.html" class="nav-cta">Giga Project</a>
+      </div>
+
+      <!--
+        A real <button> element (not a link — clicking it doesn't
+        navigate anywhere, it runs JavaScript instead, which is
+        exactly what <button> is for). It starts completely EMPTY —
+        no text between the tags — because theme.js fills in its
+        label ("☀ Light" or "☾ Dark") the moment the page finishes
+        loading, based on whichever theme is currently active.
+
+        id="theme-toggle" is how theme.js FINDS this exact button
+        (document.getElementById("theme-toggle")) — ids must be
+        unique on a page, unlike classes which can repeat.
+
+        aria-label gives screen readers a description of what this
+        button does, since it has no visible text describing its
+        purpose ahead of time (its label changes dynamically).
+      -->
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle dark and light mode"></button>
+    </div>
+  </nav>
+
+  <!--
+    Everything below is wrapped in one <div class="page">. Its only
+    purpose: style.css gives it margin-left: 220px (see section 4),
+    which shoves this whole block to the right of the fixed sidebar
+    so real content never sits underneath it. Without this wrapper,
+    the sidebar (which is "position: fixed", meaning it floats over
+    everything) would overlap the start of your text.
+  -->
+  <div class="page">
+
+    <!--
+      <main> is the semantic tag for "the primary content of this
+      page" — screen readers can jump straight to it, skipping the
+      repeated sidebar. There should only ever be ONE <main> per
+      page. class="container" is a separate, purely visual concern:
+      style.css gives it a max-width and centers it, so lines of
+      text don't stretch uncomfortably wide on a big monitor.
+    -->
+    <main class="container">
+
+      <!--
+        <h1> is the single main heading of the page — think of it as
+        the page's title, visually. Every page should have exactly
+        one <h1>. Smaller headings below it (h2, h3...) create a
+        hierarchy, like a document outline.
+      -->
+      <h1>Eclecticon</h1>
+
+      <!--
+        <p> is a paragraph — the standard tag for a block of running
+        text. class="text-muted" is a small utility class (defined
+        once in style.css, section 13) that just sets a dimmer text
+        color, used here because this line is a subtitle, not the
+        main point of the page.
+
+        This page is deliberately NOT scoped to just "Computer
+        Science" — it's a subject-neutral space for whatever you're
+        exploring, which right now happens to be mostly programming
+        and electronics, but doesn't have to stay that way. The word
+        "Eclecticon" itself is meant to signal that: a collection of
+        different, not-necessarily-related things.
+
+        PLACEHOLDER means: this exact sentence is a stand-in — edit
+        it to say something real about this page, then you can
+        delete the word PLACEHOLDER from the comment above it.
+      -->
+      <!-- PLACEHOLDER intro paragraph for Eclecticon -->
+      <p class="text-muted">
+        An exploration of different things I'm curious about — not limited to any one subject.
+      </p>
+
+      <!--
+        ==========================================================
+        THE LIST OF ENTRIES — styled like castel.dev/notes: each
+        entry is a compact "entry" with a small metadata line above
+        its title, instead of a big square tile. This whole pattern
+        (.entry-list / .entry / .entry-meta) is defined once in
+        style.css section 9B and reused on the Coursework pages too
+        — read that section of style.css alongside this to see
+        exactly which CSS rule does what.
+
+        The inline style="margin-top: 1.5rem;" just nudges this
+        block down a bit from the paragraph above; "rem" is a CSS
+        unit meaning "relative to the root font size" (defined once
+        on <body> in style.css) — 1.5rem scales consistently even if
+        you ever change the site's base font size.
+        ==========================================================
+      -->
+      <div class="entry-list" style="margin-top: 1.5rem;">
+
+        <!--
+          <article> is the semantic tag for "one self-contained piece
+          of content that would still make sense on its own" — each
+          entry qualifies, since it's really a short summary of an
+          entire separate page. class="entry" is what style.css
+          actually styles (the border line above each item, the
+          spacing) — "article" is the MEANING, "entry" is the LOOK.
+        -->
+        <article class="entry">
+          <!--
+            A small wrapper for the metadata line. class="entry-meta"
+            makes style.css lay it out as a row with a bit of gap
+            between the pieces, in small, uppercase, muted text.
+          -->
+          <div class="entry-meta">
+            <!--
+              class="accent" is what makes THIS specific word colored
+              instead of muted gray — and because color is set with
+              the CSS variable var(--accent) rather than a fixed
+              color, it automatically becomes blue here (this page's
+              section color) but would be green on the Books page,
+              purple on Notes, etc. See style.css section 1B.
+            -->
+            <span class="accent">Self-directed</span>
+            <span>Ongoing since 2025</span>
+          </div>
+
+          <!--
+            <h3> — a smaller heading, one level below <h1>/<h2>,
+            appropriate here since each entry-title is a "sub-item"
+            under the page's one <h1>. Putting an <a> (a link) INSIDE
+            a heading is completely normal and common — it just means
+            "this heading is also a clickable link." href="programming.html"
+            is a relative link to another file in this SAME folder
+            (eclecticon/), so it needs no "../" at all.
+          -->
+          <h3><a href="programming.html">Programming</a></h3>
+
+          <!-- A one-line plain-text description of this entry. -->
+          <p>Software projects, languages I'm learning, and notes on how I build things.</p>
+        </article>
+
+        <!-- Same exact pattern repeated for Chip Research: metadata line, linked heading, one-line description. -->
+        <article class="entry">
+          <div class="entry-meta">
+            <span class="accent">Research</span>
+            <span>Ongoing</span>
+          </div>
+          <h3><a href="chip-research.html">Chip Research</a></h3>
+          <p>Semiconductor and chip-design research I'm reading about and working through.</p>
+        </article>
+
+        <!-- Same pattern again, for Building My Own Chip. -->
+        <article class="entry">
+          <div class="entry-meta">
+            <span class="accent">Project</span>
+            <span>Ongoing</span>
+          </div>
+          <h3><a href="building-a-chip.html">Building My Own Chip</a></h3>
+          <p>The actual project: designing and building a chip from scratch.</p>
+        </article>
+
+        <!--
+          This entry was added by you, for electrical-stuff.html —
+          it follows the exact same pattern as the three above, which
+          is the whole point of a reusable component like .entry:
+          once you understand ONE of them, you can add as many more
+          as you want just by copying the block and changing the
+          text/href.
+        -->
+        <article class="entry">
+          <div class="entry-meta">
+            <span class="accent">Project</span>
+            <span>Ongoing</span>
+          </div>
+          <h3><a href="electrical-stuff.html">Electrical Stuff</a></h3>
+          <p>Exploring electrical engineering concepts and projects.</p>
+        </article>
+
+      </div>
+    </main>
+
+    <!--
+      <footer> is the semantic tag for closing, page-level info —
+      here just a copyright line. Every page on the site repeats
+      this exact block.
+    -->
+    <footer class="site-footer">
+      <p>&copy; 2026 Sebastian Turner &middot; built by hand with plain HTML &amp; CSS, no frameworks.</p>
+      <!--
+        &copy; and &middot; and &amp; are "HTML entities" — a way to
+        write special characters (©, ·, &) that would otherwise be
+        awkward or, in the case of &, actually break the HTML if you
+        typed the raw symbol. Every entity starts with & and ends
+        with ;.
+      -->
+    </footer>
+
+  <!-- This closes the <div class="page"> wrapper that started right after the sidebar. -->
+  </div>
+
+  <!--
+    This loads theme.js as an EXTERNAL file (as opposed to the
+    inline <script> up in <head>) — the actual code that makes the
+    toggle button clickable and functional lives there, fully
+    commented in its own right; read it next.
+
+    defer means: "download this script in the background while the
+    rest of the page keeps loading, but don't RUN it until the whole
+    page/HTML has finished parsing." That matters here because
+    theme.js needs to find the #theme-toggle button in the page —
+    if it ran too early, before the browser had even read the
+    <button> tag above, it wouldn't exist yet to find.
+  -->
+  <script src="../theme.js" defer></script>
+
+<!-- Closes <body>, then </html> closes the whole document. Nothing can come after this. -->
+</body>
+</html>
