@@ -228,12 +228,12 @@
 
       <!-- A plain wrapper <div> around the nav links, again purely for CSS layout (spacing them out as a column). -->
       <div class="sidebar-links">
-        <a href="index.html" aria-current="page">Eclecticon</a>
+        <a href="index.html" aria-current="page" hidden>Eclecticon</a>
         <a href="../books/index.html">Books</a>
         <a href="../photos/index.html">Photos</a>
         <a href="../gap-year.html">Gap Year</a>
-        <a href="../academics/index.html">Coursework</a>
-        <a href="../notes/index.html">Notes</a>
+        <a href="../academics/index.html" hidden>Coursework</a>
+        <a href="../notes/index.html" hidden>Notes</a>
         <a href="../about.html">About</a>
         <a href="../giga/disclaimer.html" class="nav-cta">Giga Project</a>
       </div>
@@ -276,7 +276,7 @@
       style.css gives it a max-width and centers it, so lines of
       text don't stretch uncomfortably wide on a big monitor.
     -->
-    <main class="container">
+    <main class="container" hidden>
 
       <!--
         <h1> is the single main heading of the page — think of it as
@@ -329,6 +329,27 @@
       <div class="entry-list" style="margin-top: 1.5rem;">
 
         <!--
+          All four entries below are currently hidden via the `hidden`
+          attribute on their <article> tag — the pages they link to
+          (programming.html, chip-research.html, building-a-chip.html,
+          electrical-stuff.html) are still just placeholder text, so
+          there's nothing real to show yet. `hidden` is a real, built-in
+          HTML attribute: browsers apply `display: none` to any element
+          that has it, no CSS or JS needed. The markup stays exactly
+          where it is in the file — to bring one entry back once you've
+          actually written that subpage, just delete the word `hidden`
+          from its <article class="entry" hidden> opening tag.
+
+          (Why not wrap them in an HTML comment instead, like
+          <!- - ... - ->? Because each entry already contains its own
+          explanatory comments inside it — comments can't nest, so the
+          first --> 
+        <!-- found inside would end the wrapper early and leave
+          the rest sitting on the page as plain, broken text. `hidden`
+          sidesteps that problem entirely.)
+        -->
+
+        <!--
           <article> is the semantic tag for "one self-contained piece
           of content that would still make sense on its own" — each
           entry qualifies, since it's really a short summary of an
@@ -336,7 +357,7 @@
           actually styles (the border line above each item, the
           spacing) — "article" is the MEANING, "entry" is the LOOK.
         -->
-        <article class="entry">
+        <article class="entry" hidden>
           <!--
             A small wrapper for the metadata line. class="entry-meta"
             makes style.css lay it out as a row with a bit of gap
@@ -371,7 +392,7 @@
         </article>
 
         <!-- Same exact pattern repeated for Chip Research: metadata line, linked heading, one-line description. -->
-        <article class="entry">
+        <article class="entry" hidden>
           <div class="entry-meta">
             <span class="accent">Research</span>
             <span>Ongoing</span>
@@ -381,7 +402,7 @@
         </article>
 
         <!-- Same pattern again, for Building My Own Chip. -->
-        <article class="entry">
+        <article class="entry" hidden>
           <div class="entry-meta">
             <span class="accent">Project</span>
             <span>Ongoing</span>
@@ -398,7 +419,7 @@
           as you want just by copying the block and changing the
           text/href.
         -->
-        <article class="entry">
+        <article class="entry" hidden>
           <div class="entry-meta">
             <span class="accent">Project</span>
             <span>Ongoing</span>
